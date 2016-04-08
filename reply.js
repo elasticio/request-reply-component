@@ -27,13 +27,22 @@ exports.process = function (msg) {
     function connect() {
         var uri = process.env.ELASTICIO_AMQP_URI;
 
-        return amqplib.connect(uri);
+        function onConnect(connection) {
+            console.log('Successfully connected to AMQP');
+            amqpConnection = connection;
+            return connection;
+        }
+
+        return amqplib.connect(uri).then(onConnect);
     }
 
     function createChannel(connection) {
-        amqpConnection = connection;
 
-        return connection.createChannel();
+        function onCreateChannel(channel) {
+            console.log('Successfully connected channel');
+            return channel;
+        }
+        return connection.createChannel().then(onCreateChannel);
     }
 
     function publishReply(channel) {
@@ -49,12 +58,13 @@ exports.process = function (msg) {
         var options = {
             contentType: 'application/json',
             contentEncoding: 'utf8',
-            mandatory: true,
             headers: headers
         };
 
 
         console.log(`Publishing response for execId=${execId}`);
+        console.log(`Exchange: ${exchangeName}`);
+        console.log(`Routing key: ${routingKey}`);
 
         return channel.publish(
             exchangeName,
@@ -79,6 +89,7 @@ exports.process = function (msg) {
 
     function onEnd() {
         if (amqpConnection) {
+            console.log('Closing AMQP connection');
             amqpConnection.close();
         }
         console.log(`Finished processing message for execId=${execId}`);
