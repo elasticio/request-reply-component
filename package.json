@@ -1,0 +1,14 @@
+{
+  "name": "request-reply",
+  "version": "1.0.0",
+  "description": "elastic.io webhook component",
+  "engine": {
+    "node": "5.1.0"
+  },
+  "author": "elastic.io GmbH",
+  "dependencies": {
+    "amqplib": "^0.4.1",
+    "debug": "^2.2.0",
+    "elasticio-sailor-nodejs": "1.1.0"
+  }
+}
