@@ -5,14 +5,16 @@
         "reply" : {
             "title" : "Reply",
             "main" : "./reply.js",
-            "in": {
-                "type": "object",
-                "properties": {
-                    "responseBody": {
-                        "title": "Response Body",
-                        "type": "string",
-                        "required": true,
-                        "maxLength": 1000
+            "metadata": {
+                "in": {
+                    "type": "object",
+                    "properties": {
+                        "responseBody": {
+                            "title": "Response Body",
+                            "type": "string",
+                            "required": true,
+                            "maxLength": 1000
+                        }
                     }
                 }
             }
