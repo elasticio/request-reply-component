@@ -6,6 +6,7 @@ exports.process = function (msg) {
     var taskId = process.env.ELASTICIO_TASK_ID;
     var userId = process.env.ELASTICIO_USER_ID;
     var execId = process.env.ELASTICIO_EXEC_ID;
+    var exchangeName = process.env.ELASTICIO_PUBLISH_MESSAGES_TO;
 
     console.log(`Received new message for execId=${execId}`);
 
@@ -46,7 +47,6 @@ exports.process = function (msg) {
     }
 
     function publishReply(channel) {
-        var exchangeName = process.env.ELASTICIO_PUBLISH_MESSAGES_TO;
         var routingKey = getReplyRoutingKey(execId);
 
         var headers = {
@@ -90,7 +90,7 @@ exports.process = function (msg) {
     function onEnd() {
         if (amqpConnection) {
             console.log('Closing AMQP connection');
-            amqpConnection.close();
+            //amqpConnection.close();
         }
         console.log(`Finished processing message for execId=${execId}`);
         self.emit('end');
