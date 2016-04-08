@@ -1,5 +1,6 @@
 "use strict";
 var Q = require("q");
+var amqplib = require('amqplib');
 
 exports.process = function (msg) {
     var taskId = process.env.ELASTICIO_TASK_ID;
@@ -12,19 +13,30 @@ exports.process = function (msg) {
 
     var self = this;
 
+    var amqpConnection;
+
 
     Q()
         .then(connect)
+        .then(createChannel)
         .then(publishReply)
         .then(emitData)
         .fail(onError)
         .finally(onEnd);
 
     function connect() {
+        var uri = process.env.ELASTICIO_AMQP_URI;
 
+        return amqplib.connect(uri);
     }
 
-    function publishReply() {
+    function createChannel(connection) {
+        amqpConnection = connection;
+
+        return connection.createChannel();
+    }
+
+    function publishReply(channel) {
         var exchangeName = process.env.ELASTICIO_PUBLISH_MESSAGES_TO;
         var routingKey = getReplyRoutingKey(execId);
 
@@ -66,6 +78,9 @@ exports.process = function (msg) {
     }
 
     function onEnd() {
+        if (amqpConnection) {
+            amqpConnection.close();
+        }
         console.log(`Finished processing message for execId=${execId}`);
         self.emit('end');
     }
