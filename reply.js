@@ -18,9 +18,10 @@ exports.process = function (msg) {
 
 
     Q()
-        .then(connect)
-        .then(createChannel)
-        .then(publishReply)
+        //.then(connect)
+        //.then(createChannel)
+        .then(emitReply)
+        //.then(publishReply)
         .then(emitData)
         .fail(onError)
         .finally(onEnd);
@@ -44,6 +45,15 @@ exports.process = function (msg) {
             return channel;
         }
         return connection.createChannel().then(onCreateChannel);
+    }
+
+    function emitReply() {
+        var routingKey = getReplyRoutingKey(execId);
+
+        var reply = messages.newMessageWithBody(responseBody);
+        reply.headers['X-EIO-Routing-Key'] = routingKey;
+
+        self.emit('data', reply);
     }
 
     function publishReply(channel) {
