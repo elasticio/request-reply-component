@@ -1,6 +1,7 @@
 "use strict";
-var Q = require("q");
+let Q = require("q");
 var amqplib = require('amqplib');
+let messages = require('elasticio-node').messages;
 
 exports.process = function (msg) {
     var taskId = process.env.ELASTICIO_TASK_ID;
