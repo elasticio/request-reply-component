@@ -11,7 +11,7 @@ exports.process = function (msg) {
 
     console.log(`Received new message for execId=${execId}`);
 
-    var contentType = msg.body.contentType || DEFAULT_CONTENT_TYPE;
+    var contentType = getContentType();
     var responseBody = msg.body.responseBody;
 
     var self = this;
@@ -34,6 +34,20 @@ exports.process = function (msg) {
         reply.headers[HEADER_CONTENT_TYPE] = contentType;
 
         self.emit('data', reply);
+    }
+
+    function getContentType() {
+        var contentType = msg.body.contentType;
+
+        if (contentType) {
+            if(/^application|text\//.test(contentType)){
+                return contentType;
+            }
+
+            throw new Error(`Content-type ${contentType} is not supported`);
+        }
+
+        return DEFAULT_CONTENT_TYPE;
     }
 
     function emitData() {

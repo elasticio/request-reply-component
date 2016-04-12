@@ -10,14 +10,9 @@
                     "type": "object",
                     "properties": {
                         "contentType": {
-                            "title": "Content Type",
+                            "title": "Content Type (default application/json)",
                             "type": "string",
-                            "required": false,
-                            "enum":[
-                                "application/json",
-                                "application/xml",
-                                "text/plain"
-                            ]
+                            "required": false
                         },
                         "responseBody": {
                             "title": "Response Body",
