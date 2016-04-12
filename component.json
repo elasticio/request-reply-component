@@ -8,14 +8,14 @@
             "fields": {
                 "contentType":{
                     "viewClass":"SelectView",
-                    "label":"Content Type",
-                    "required":true,
+                    "label":"Response Content Type",
+                    "required":false,
                     "model":{
                         "application/json":"application/json",
                         "application/xml":"application/xml",
                         "text/plain":"text/plain"
                     },
-                    "prompt":"Please select an Content Type"
+                    "prompt":"Please select a Content Type"
                 }
             },
             "metadata": {
