@@ -5,6 +5,19 @@
         "reply" : {
             "title" : "Reply",
             "main" : "./reply.js",
+            "fields": {
+                "contentType":{
+                    "viewClass":"SelectView",
+                    "label":"Content Type",
+                    "required":true,
+                    "model":{
+                        "application/json":"application/json",
+                        "application/xml":"application/xml",
+                        "text/plain":"text/plain"
+                    },
+                    "prompt":"Please select an Content Type"
+                }
+            },
             "metadata": {
                 "in": {
                     "type": "object",
