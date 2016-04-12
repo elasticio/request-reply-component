@@ -49,10 +49,12 @@ exports.process = function (msg) {
     }
 
     function emitReply() {
-        var routingKey = getReplyRoutingKey(execId);
+        let replyTo = msg.headers.reply_to;
+        
+        console.log(`Replying to ${replyTo}`);
 
         var reply = messages.newMessageWithBody(responseBody);
-        reply.headers['X-EIO-Routing-Key'] = routingKey;
+        reply.headers['X-EIO-Routing-Key'] = replyTo;
 
         self.emit('data', reply);
     }
