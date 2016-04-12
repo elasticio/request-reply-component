@@ -11,6 +11,7 @@ exports.process = function (msg) {
 
     console.log(`Received new message for execId=${execId}`);
 
+    var contentType = msg.body.contentType || DEFAULT_CONTENT_TYPE;
     var responseBody = msg.body.responseBody;
 
     var self = this;
@@ -23,11 +24,10 @@ exports.process = function (msg) {
         .finally(onEnd);
 
     function emitReply() {
-        var contentType = cfg.contentType || DEFAULT_CONTENT_TYPE;
-
         let replyTo = msg.headers.reply_to;
 
         console.log(`Replying to ${replyTo}`);
+        console.log(`Response content type is ${contentType}`);
 
         var reply = messages.newMessageWithBody(responseBody);
         reply.headers[HEADER_ROUTING_KEY] = replyTo;

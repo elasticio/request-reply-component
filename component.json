@@ -5,23 +5,20 @@
         "reply" : {
             "title" : "Reply",
             "main" : "./reply.js",
-            "fields": {
-                "contentType":{
-                    "viewClass":"SelectView",
-                    "label":"Response Content Type",
-                    "required":false,
-                    "model":{
-                        "application/json":"application/json",
-                        "application/xml":"application/xml",
-                        "text/plain":"text/plain"
-                    },
-                    "prompt":"Please select a Content Type"
-                }
-            },
             "metadata": {
                 "in": {
                     "type": "object",
                     "properties": {
+                        "contentType": {
+                            "title": "Content Type",
+                            "type": "string",
+                            "required": false,
+                            "enum":[
+                                "application/json",
+                                "application/xml",
+                                "text/plain"
+                            ]
+                        },
                         "responseBody": {
                             "title": "Response Body",
                             "type": "string",
