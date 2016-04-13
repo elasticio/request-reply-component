@@ -1,18 +1,11 @@
 {
     "title":"HTTP Reply",
+    "service": "request-reply",
     "description" : "Used to reply to HTTP webhooks",
     "actions" : {
         "reply" : {
             "title" : "Reply",
             "main" : "./reply.js",
-            "fields": {
-                "hidden": {
-                    "viewClass": "HiddenFieldView",
-                    "label": "Hidden",
-                    "required": false,
-                    "value2": "foobarbaz"
-                }
-            },
             "metadata": {
                 "in": {
                     "type": "object",
