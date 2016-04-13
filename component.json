@@ -6,9 +6,9 @@
             "title" : "Reply",
             "main" : "./reply.js",
             "fields": {
-                "url": {
-                    "viewClass": "WebHookURLView",
-                    "label": "Sends Reply to URL",
+                "hidden": {
+                    "viewClass": "HiddenFieldView",
+                    "label": "Hidden",
                     "required": false
                 }
             },
