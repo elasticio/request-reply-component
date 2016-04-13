@@ -5,6 +5,13 @@
         "reply" : {
             "title" : "Reply",
             "main" : "./reply.js",
+            "fields": {
+                "url": {
+                    "viewClass": "WebHookURLView",
+                    "label": "Sends Reply to URL",
+                    "required": false
+                }
+            },
             "metadata": {
                 "in": {
                     "type": "object",
