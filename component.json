@@ -9,7 +9,8 @@
                 "hidden": {
                     "viewClass": "HiddenFieldView",
                     "label": "Hidden",
-                    "required": false
+                    "required": false,
+                    "value": "foobarbaz"
                 }
             },
             "metadata": {
