@@ -5,12 +5,12 @@ describe('Reply', () => {
     const should = require('chai').should();
     const reply = require('../reply.js');
     const messages = require('elasticio-node').messages;
-    
+
     process.env.ELASTICIO_EXEC_ID = 'my_exec_123';
 
 
     describe('reply properly', () => {
-        console.log('=>reply properly')
+
         const self = {
             emit: sinon.spy()
         };
