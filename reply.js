@@ -11,17 +11,23 @@ exports.process = function (msg) {
 
     console.log(`Received new message for execId=${execId}`);
 
-    var contentType = getContentType();
-    var responseBody = msg.body.responseBody;
+    var contentType;
+    var responseBody;
 
     var self = this;
 
 
     Q()
+        .then(init)
         .then(emitReply)
         .then(emitData)
         .fail(onError)
         .finally(onEnd);
+
+    function init() {
+        contentType = getContentType();
+        responseBody = msg.body.responseBody;
+    }
 
     function emitReply() {
         let replyTo = msg.headers.reply_to;

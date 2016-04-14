@@ -6,9 +6,15 @@
     "node": "5.1.0"
   },
   "author": "elastic.io GmbH",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha --recursive spec"
+  },
   "dependencies": {
+    "chai": "^3.5.0",
     "debug": "^2.2.0",
+    "elasticio-node": "0.0.7",
     "elasticio-sailor-nodejs": "1.3.0-dev.3",
-    "elasticio-node": "0.0.7"
+    "mocha": "^2.4.5",
+    "sinon": "^1.17.3"
   }
 }
