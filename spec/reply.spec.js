@@ -82,7 +82,11 @@ describe('Reply', () => {
             emit: sinon.spy()
         };
 
-        let msg = "";
+        let msg = {
+            headers : {
+               reply_to: 'my_routing_key_123'
+            }
+        };
 
         before((done) => {
 

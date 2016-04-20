@@ -7,9 +7,9 @@ const HEADER_ROUTING_KEY = 'X-EIO-Routing-Key';
 const DEFAULT_CONTENT_TYPE = 'application/json';
 
 exports.process = function (msg) {
-    var execId = process.env.ELASTICIO_EXEC_ID;
+    let replyTo = msg.headers.reply_to;
 
-    console.log(`Received new message for execId=${execId}`);
+    console.log(`Received new message, replyTo=${replyTo}`);
 
     var contentType;
     var responseBody;
@@ -30,7 +30,6 @@ exports.process = function (msg) {
     }
 
     function emitReply() {
-        let replyTo = msg.headers.reply_to;
 
         console.log(`Replying to ${replyTo}`);
         console.log(`Response content type is ${contentType}`);
@@ -67,7 +66,7 @@ exports.process = function (msg) {
     }
 
     function onEnd() {
-        console.log(`Finished processing message for execId=${execId}`);
+        console.log(`Finished processing message for replyTo=${replyTo}`);
         self.emit('end');
     }
 };
