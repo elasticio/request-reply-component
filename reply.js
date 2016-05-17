@@ -1,5 +1,6 @@
 "use strict";
 let Q = require("q");
+let debug = require('debug')('request-reply');
 let messages = require('elasticio-node').messages;
 
 const HEADER_CONTENT_TYPE = 'Content-Type';
@@ -10,6 +11,7 @@ exports.process = function (msg) {
     let replyTo = msg.headers.reply_to;
 
     console.log(`Received new message, replyTo=${replyTo}`);
+    debug('Received new message:%j', msg);
 
     var contentType;
     var responseBody;
@@ -38,6 +40,7 @@ exports.process = function (msg) {
         reply.headers[HEADER_ROUTING_KEY] = replyTo;
         reply.headers[HEADER_CONTENT_TYPE] = contentType;
 
+        debug('Replying with %j', reply);
         self.emit('data', reply);
     }
 

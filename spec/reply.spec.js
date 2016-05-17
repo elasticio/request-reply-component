@@ -1,13 +1,13 @@
 'use strict';
 
 describe('Reply', () => {
+    process.env.ELASTICIO_EXEC_ID = 'my_exec_123';
+    process.env.DEBUG = 'request-reply';
+
     const sinon = require('sinon');
     const should = require('chai').should();
     const reply = require('../reply.js');
     const messages = require('elasticio-node').messages;
-
-    process.env.ELASTICIO_EXEC_ID = 'my_exec_123';
-
 
     describe('reply properly', () => {
 
