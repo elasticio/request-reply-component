@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "elastic.io request-reply component",
   "engine": {
-    "node": "6.4.0"
+    "node": "5.1.0"
   },
   "author": "elastic.io GmbH",
   "scripts": {

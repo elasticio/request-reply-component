@@ -59,7 +59,7 @@ exports.process = function (msg) {
     }
 
     function emitData() {
-        const {original_message: origMessage} = msg;
+        const origMessage = msg.original_message;
 
         if (origMessage) {
             debug('Emitting original message');
