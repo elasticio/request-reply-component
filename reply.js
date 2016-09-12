@@ -73,3 +73,37 @@ exports.process = function (msg) {
         self.emit('end');
     }
 };
+
+exports.getMetaModel = function getMetaModel(cfg, cb) {
+    const headers = (cfg.headers || []).split(',').map(header => header.trim());
+
+    console.log('Headers:', headers);
+
+    const headersMetadata = headers.reduce((properties, header) => {
+        properties[header] = {
+            title: `Header "${header}"`,
+            type: 'string',
+            required: true,
+            maxLength: 1000
+        }
+        return properties;
+    }, {});
+
+    const metadata = {
+        'in': {
+            type: 'object',
+            properties: {
+                responseBody: {
+                    title: 'Response Body',
+                    type: 'string',
+                    required: true,
+                    maxLength: 1000
+                }
+            }
+        }
+    };
+
+    Object.assign(metadata.in.properties, headersMetadata);
+
+    return cb(null, metadata);
+};
