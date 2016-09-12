@@ -83,9 +83,8 @@ exports.getMetaModel = function getMetaModel(cfg, cb) {
         properties[header] = {
             title: `Header "${header}"`,
             type: 'string',
-            required: true,
-            maxLength: 1000
-        }
+            required: true
+        };
         return properties;
     }, {});
 
