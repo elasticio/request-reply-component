@@ -66,7 +66,7 @@ exports.process = function (msg) {
             return self.emit('data', messages.newMessageWithBody(origMessage));
         }
 
-        debug.warn('Original message not found. Emitting data.');
+        debug('Original message not found. Emitting data.');
         self.emit('data', msg);
     }
 
