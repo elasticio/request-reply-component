@@ -11,7 +11,8 @@
                     "label": "Custom HTTP Headers",
                     "required": false,
                     "viewClass": "InMetadataExtensionView",
-                    "placeholder": "Header names separated by comma (e.g Content-Type,Content-Language)"
+                    "placeholder": "Header names separated by comma (e.g Content-Type,Content-Language)",
+                    "prefix": "Header"
                 }
             },
             "metadata": {
