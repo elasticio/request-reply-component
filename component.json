@@ -6,6 +6,14 @@
         "reply" : {
             "title" : "Reply",
             "main" : "./reply.js",
+            "fields": {
+                "customHeaders": {
+                    "label": "Custom HTTP Headers",
+                    "required": false,
+                    "viewClass": "InMetadataExtensionView",
+                    "placeholder": "Header names separated by comma (e.g Content-Type,Content-Language)"
+                }
+            },
             "metadata": {
                 "in": {
                     "type": "object",
