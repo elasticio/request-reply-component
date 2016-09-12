@@ -6,14 +6,31 @@
         "reply" : {
             "title" : "Reply",
             "main" : "./reply.js",
-            "dynamicMetadata": true,
             "fields": {
                 "headers": {
-                    "label": "HTTP Headers",
+                    "label": "Custom HTTP Headers",
                     "required": false,
-                    "viewClass": "TextFieldView",
+                    "viewClass": "InputFieldsExtensionView",
                     "placeholder": "Header names separated by comma (e.g Content-Type,Content-Language)"
                 }
+            },
+            "metadata": {
+              "in": {
+                "type": "object",
+                "properties": {
+                  "contentType": {
+                    "title": "Content Type (default application/json)",
+                    "type": "string",
+                    "required": false
+                  },
+                  "responseBody": {
+                    "title": "Response Body",
+                    "type": "string",
+                    "required": true,
+                    "maxLength": 1000
+                  }
+                }
+              }
             }
         }
     }
