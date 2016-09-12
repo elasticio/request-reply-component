@@ -40,6 +40,11 @@ exports.process = function (msg) {
         reply.headers[HEADER_ROUTING_KEY] = replyTo;
         reply.headers[HEADER_CONTENT_TYPE] = contentType;
 
+        if (msg.body.customHeaders) {
+            console.log('Applying custom headers: %j', msg.body.customHeaders);
+            Object.assign(reply.headers, msg.body.customHeaders);
+        }
+
         debug('Replying with %j', reply);
         self.emit('data', reply);
     }
