@@ -48,7 +48,7 @@ exports.process = function (msg) {
         var contentType = msg.body.contentType;
 
         if (contentType) {
-            if(/^application|text\//.test(contentType)){
+            if (/^application|text\//.test(contentType)) {
                 return contentType;
             }
 
