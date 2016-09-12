@@ -40,6 +40,11 @@ exports.process = function (msg) {
         reply.headers[HEADER_ROUTING_KEY] = replyTo;
         reply.headers[HEADER_CONTENT_TYPE] = contentType;
 
+        if (msg.body.customHeaders) {
+            console.log('Applying custom headers: %j', msg.body.customHeaders);
+            Object.assign(reply.headers, msg.body.customHeaders);
+        }
+
         debug('Replying with %j', reply);
         self.emit('data', reply);
     }
@@ -72,37 +77,4 @@ exports.process = function (msg) {
         console.log(`Finished processing message for replyTo=${replyTo}`);
         self.emit('end');
     }
-};
-
-exports.getMetaModel = function getMetaModel(cfg, cb) {
-    const headers = (cfg.headers || '').split(',').map(header => header.trim());
-
-    console.log('Headers:', headers);
-
-    const headersMetadata = headers.reduce((properties, header) => {
-        properties[header] = {
-            title: `Header "${header}"`,
-            type: 'string',
-            required: true
-        };
-        return properties;
-    }, {});
-
-    const metadata = {
-        'in': {
-            type: 'object',
-            properties: {
-                responseBody: {
-                    title: 'Response Body',
-                    type: 'string',
-                    required: true,
-                    maxLength: 1000
-                }
-            }
-        }
-    };
-
-    Object.assign(metadata.in.properties, headersMetadata);
-
-    return cb(null, metadata);
 };
