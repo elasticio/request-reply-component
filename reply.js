@@ -75,7 +75,7 @@ exports.process = function (msg) {
 };
 
 exports.getMetaModel = function getMetaModel(cfg, cb) {
-    const headers = (cfg.headers || []).split(',').map(header => header.trim());
+    const headers = (cfg.headers || '').split(',').map(header => header.trim());
 
     console.log('Headers:', headers);
 
