@@ -12,7 +12,7 @@
                     "required": false,
                     "viewClass": "InMetadataExtensionView",
                     "placeholder": "Header names separated by comma (e.g Content-Type,Content-Language)",
-                    "prefix": "Header"
+                    "title-prefix": "Header"
                 }
             },
             "metadata": {
