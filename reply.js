@@ -59,7 +59,14 @@ exports.process = function (msg) {
     }
 
     function emitData() {
-        console.log("Emitting data");
+        const origMessage = msg.original_message;
+
+        if (origMessage) {
+            debug('Emitting original message');
+            return self.emit('data', origMessage);
+        }
+
+        debug('Original message not found. Emitting data.');
         self.emit('data', msg);
     }
 
