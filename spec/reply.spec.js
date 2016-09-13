@@ -19,6 +19,10 @@ describe('Reply', () => {
             contentType: 'application/json',
             responseBody: {
                 greeting: 'Hello, world!'
+            },
+            customHeaders: {
+                'X-Test-Header1': 'test1',
+                'X-Test-Header2': 'test2'
             }
         });
 
@@ -38,17 +42,19 @@ describe('Reply', () => {
             var spy = self.emit;
             var dataCall = spy.getCall(0);
 
-            dataCall.args[0].should.to.be.equal("data");
+            dataCall.args[0].should.to.be.equal('data');
 
             var data = dataCall.args[1];
 
             data.headers.should.to.be.deep.equal({
-                "Content-Type": "application/json",
-                "X-EIO-Routing-Key": "my_routing_key_123"
+                'Content-Type': 'application/json',
+                'X-EIO-Routing-Key': 'my_routing_key_123',
+                'X-Test-Header1': 'test1',
+                'X-Test-Header2': 'test2'
             });
 
             data.body.should.to.be.deep.equal({
-                "greeting": "Hello, world!"
+                greeting: 'Hello, world!'
             });
         });
 
@@ -56,17 +62,30 @@ describe('Reply', () => {
             var spy = self.emit;
             var dataCall = spy.getCall(1);
 
-            dataCall.args[0].should.to.be.equal("data");
+            dataCall.args[0].should.to.be.equal('data');
 
             var data = dataCall.args[1];
 
-            data.should.be.deep.equal({body: {test: 'test'}});
+            data.headers.should.to.be.deep.equal({
+                reply_to: 'my_routing_key_123'
+            });
+
+            data.body.should.to.be.deep.equal({
+                contentType: 'application/json',
+                responseBody: {
+                    greeting: 'Hello, world!'
+                },
+                customHeaders: {
+                    'X-Test-Header1': 'test1',
+                    'X-Test-Header2': 'test2'
+                }
+            });
         });
 
         it('should emit end', () => {
             var spy = self.emit;
 
-            spy.getCall(2).args[0].should.to.be.equal("end");
+            spy.getCall(2).args[0].should.to.be.equal('end');
         });
     });
 
@@ -91,17 +110,17 @@ describe('Reply', () => {
             var spy = self.emit;
             var call = spy.getCall(0);
 
-            call.args[0].should.to.be.equal("error");
+            call.args[0].should.to.be.equal('error');
 
             var error = call.args[1];
 
-            error.message.should.to.be.equal("Cannot read property 'contentType' of undefined");
+            error.message.should.to.be.equal('Cannot read property \'contentType\' of undefined');
         });
 
         it('should emit end', () => {
             var spy = self.emit;
 
-            spy.getCall(1).args[0].should.to.be.equal("end");
+            spy.getCall(1).args[0].should.to.be.equal('end');
         });
     });
 
@@ -124,19 +143,17 @@ describe('Reply', () => {
             var spy = self.emit;
             var call = spy.getCall(0);
 
-            call.args[0].should.to.be.equal("error");
+            call.args[0].should.to.be.equal('error');
 
             var error = call.args[1];
 
-            error.message.should.to.be.equal("Content-type audio/mp4 is not supported");
+            error.message.should.to.be.equal('Content-type audio/mp4 is not supported');
         });
 
         it('should emit end', () => {
             var spy = self.emit;
 
-            spy.getCall(1).args[0].should.to.be.equal("end");
+            spy.getCall(1).args[0].should.to.be.equal('end');
         });
     });
-
-
 });
