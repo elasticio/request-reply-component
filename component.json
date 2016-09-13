@@ -1,30 +1,39 @@
 {
-    "title":"HTTP Reply",
-    "service": "request-reply",
-    "description" : "Used to reply to HTTP webhooks",
-    "actions" : {
-        "reply" : {
-            "title" : "Reply",
-            "main" : "./reply.js",
-            "metadata": {
-                "in": {
-                    "type": "object",
-                    "properties": {
-                        "contentType": {
-                            "title": "Content Type (default application/json)",
-                            "type": "string",
-                            "required": false
-                        },
-                        "responseBody": {
-                            "title": "Response Body",
-                            "type": "string",
-                            "required": true,
-                            "maxLength": 1000
-                        }
-                    }
-                },
-                "out": {}
-            }
+  "title": "HTTP Reply",
+  "service": "request-reply",
+  "description": "Used to reply to HTTP webhooks",
+  "actions": {
+    "reply": {
+      "title": "Reply",
+      "main": "./reply.js",
+      "fields": {
+        "customHeaders": {
+          "label": "Custom HTTP Headers",
+          "required": false,
+          "viewClass": "InMetadataExtensionView",
+          "placeholder": "Header names separated by comma (e.g Content-Type,Content-Language)",
+          "titlePrefix": "Header"
         }
+      },
+      "metadata": {
+        "in": {
+          "type": "object",
+          "properties": {
+            "contentType": {
+              "title": "Content Type (default application/json)",
+              "type": "string",
+              "required": false
+            },
+            "responseBody": {
+              "title": "Response Body",
+              "type": "string",
+              "required": true,
+              "maxLength": 1000
+            }
+          }
+        },
+        "out": {}
+      }
     }
+  }
 }

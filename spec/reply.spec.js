@@ -9,8 +9,7 @@ describe('Reply', () => {
     const reply = require('../reply.js');
     const messages = require('elasticio-node').messages;
 
-    describe('reply properly', () => {
-
+    describe('for message with body', () => {
         const self = {
             emit: sinon.spy()
         };
@@ -19,58 +18,60 @@ describe('Reply', () => {
             contentType: 'application/json',
             responseBody: {
                 greeting: 'Hello, world!'
+            },
+            customHeaders: {
+                'X-Test-Header1': 'test1',
+                'X-Test-Header2': 'test2'
             }
         });
 
-        msg.original_message = {body: {test: 'test'}};
+        msg.original_message = messages.newMessageWithBody({test: 'test'});
+        msg.original_message.headers = {
+            some: 'header'
+        };
 
         msg.headers = {
             reply_to: 'my_routing_key_123'
         };
 
         before((done) => {
-
             reply.process.bind(self)(msg);
             setTimeout(done, 50)
         });
 
-        it('should emit reply', () => {
+        it('should emit reply and original message', () => {
             var spy = self.emit;
-            var dataCall = spy.getCall(0);
 
-            dataCall.args[0].should.to.be.equal("data");
+            spy.callCount.should.be.equal(3);
 
-            var data = dataCall.args[1];
+            spy.getCall(0).args[0].should.be.equal('data');
+            spy.getCall(1).args[0].should.be.equal('data');
+            spy.getCall(2).args[0].should.be.equal('end');
 
-            data.headers.should.to.be.deep.equal({
-                "Content-Type": "application/json",
-                "X-EIO-Routing-Key": "my_routing_key_123"
+            // reply message
+            spy.getCall(0).args[1].headers.should.be.deep.equal({
+                'Content-Type': 'application/json',
+                'X-EIO-Routing-Key': 'my_routing_key_123',
+                'X-Test-Header1': 'test1',
+                'X-Test-Header2': 'test2'
             });
 
-            data.body.should.to.be.deep.equal({
-                "greeting": "Hello, world!"
+            spy.getCall(0).args[1].body.should.be.deep.equal({
+                greeting: 'Hello, world!'
             });
-        });
 
-        it('should emit original message', () => {
-            var spy = self.emit;
-            var dataCall = spy.getCall(1);
+            // original message
+            spy.getCall(1).args[1].headers.should.be.deep.equal({
+                some: 'header'
+            });
 
-            dataCall.args[0].should.to.be.equal("data");
-
-            var data = dataCall.args[1];
-
-            data.should.be.deep.equal({body: {test: 'test'}});
-        });
-
-        it('should emit end', () => {
-            var spy = self.emit;
-
-            spy.getCall(2).args[0].should.to.be.equal("end");
+            spy.getCall(1).args[1].body.should.be.deep.equal({
+                test: 'test'
+            });
         });
     });
 
-    describe('body is empty', () => {
+    describe('for message with empty body', () => {
         const self = {
             emit: sinon.spy()
         };
@@ -91,17 +92,16 @@ describe('Reply', () => {
             var spy = self.emit;
             var call = spy.getCall(0);
 
-            call.args[0].should.to.be.equal("error");
+            call.args[0].should.be.equal('error');
 
             var error = call.args[1];
 
-            error.message.should.to.be.equal("Cannot read property 'contentType' of undefined");
+            error.message.should.be.equal('Cannot read property \'contentType\' of undefined');
         });
 
         it('should emit end', () => {
             var spy = self.emit;
-
-            spy.getCall(1).args[0].should.to.be.equal("end");
+            spy.getCall(1).args[0].should.be.equal('end');
         });
     });
 
@@ -115,7 +115,6 @@ describe('Reply', () => {
         });
 
         before((done) => {
-
             reply.process.bind(self)(msg);
             setTimeout(done, 50)
         });
@@ -124,19 +123,17 @@ describe('Reply', () => {
             var spy = self.emit;
             var call = spy.getCall(0);
 
-            call.args[0].should.to.be.equal("error");
+            call.args[0].should.be.equal('error');
 
             var error = call.args[1];
 
-            error.message.should.to.be.equal("Content-type audio/mp4 is not supported");
+            error.message.should.be.equal('Content-type audio/mp4 is not supported');
         });
 
         it('should emit end', () => {
             var spy = self.emit;
 
-            spy.getCall(1).args[0].should.to.be.equal("end");
+            spy.getCall(1).args[0].should.be.equal('end');
         });
     });
-
-
 });
