@@ -22,7 +22,7 @@ describe('Reply', () => {
             }
         });
 
-        msg.original_message = {test: 'test'};
+        msg.original_message = {body: {test: 'test'}};
 
         msg.headers = {
             reply_to: 'my_routing_key_123'
@@ -60,7 +60,7 @@ describe('Reply', () => {
 
             var data = dataCall.args[1];
 
-            data.body.should.to.be.deep.equal({test: 'test'});
+            data.should.be.deep.equal({body: {test: 'test'}});
         });
 
         it('should emit end', () => {
