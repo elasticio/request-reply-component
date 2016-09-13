@@ -9,8 +9,7 @@ describe('Reply', () => {
     const reply = require('../reply.js');
     const messages = require('elasticio-node').messages;
 
-    describe('reply properly', () => {
-
+    describe('for message with body', () => {
         const self = {
             emit: sinon.spy()
         };
@@ -72,7 +71,7 @@ describe('Reply', () => {
         });
     });
 
-    describe('body is empty', () => {
+    describe('for message with empty body', () => {
         const self = {
             emit: sinon.spy()
         };
