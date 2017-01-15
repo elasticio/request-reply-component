@@ -28,7 +28,10 @@ exports.process = function (msg) {
 
     function init() {
         contentType = getContentType();
-        responseBody = msg.body.responseBody;
+        if (!msg.body.responseBody) {
+            debug('Field responseBody on the message body was empty, we will reply with the whole message body');
+        }
+        responseBody = msg.body.responseBody? msg.body.responseBody : msg.body;
     }
 
     function emitReply() {

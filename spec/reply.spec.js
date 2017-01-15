@@ -40,7 +40,7 @@ describe('Reply', () => {
         });
 
         it('should emit reply and original message', () => {
-            var spy = self.emit;
+            const spy = self.emit;
 
             spy.callCount.should.be.equal(3);
 
@@ -89,19 +89,74 @@ describe('Reply', () => {
         });
 
         it('should emit error', () => {
-            var spy = self.emit;
-            var call = spy.getCall(0);
+            const spy = self.emit;
+            const call = spy.getCall(0);
 
             call.args[0].should.be.equal('error');
 
-            var error = call.args[1];
+            const error = call.args[1];
 
             error.message.should.be.equal('Cannot read property \'contentType\' of undefined');
         });
 
         it('should emit end', () => {
-            var spy = self.emit;
+            const spy = self.emit;
             spy.getCall(1).args[0].should.be.equal('end');
+        });
+    });
+
+
+    describe('for message with non-existing responseBody', () => {
+        const self = {
+            emit: sinon.spy()
+        };
+
+        let msg = {
+            headers : {
+                reply_to: 'my_routing_key_123'
+            },
+            body: {
+                foo: 'bar'
+            }
+        };
+
+        before((done) => {
+            reply.process.bind(self)(msg);
+            setTimeout(done, 50)
+        });
+
+        it('should have send two data and one end', () => {
+            const spy = self.emit;
+            spy.callCount.should.be.equal(3);
+            spy.getCall(0).args[0].should.be.equal('data');
+            spy.getCall(1).args[0].should.be.equal('data');
+            spy.getCall(2).args[0].should.be.equal('end');
+        });
+
+        it('should emit data for response', () => {
+            const spy = self.emit;
+            // reply message
+            spy.getCall(0).args[1].headers.should.be.deep.equal({
+                'Content-Type': 'application/json',
+                'X-EIO-Routing-Key': 'my_routing_key_123'
+            });
+            spy.getCall(0).args[1].body.should.be.deep.equal({
+                foo: 'bar'
+            });
+
+        });
+
+        it('should emit data for original message', () => {
+            const spy = self.emit;
+            // original message
+            spy.getCall(1).args[1].body.should.be.deep.equal({
+                foo: 'bar'
+            });
+        });
+
+        it('should emit end', () => {
+            const spy = self.emit;
+            spy.getCall(2).args[0].should.be.equal('end');
         });
     });
 
@@ -120,20 +175,21 @@ describe('Reply', () => {
         });
 
         it('should emit error', () => {
-            var spy = self.emit;
-            var call = spy.getCall(0);
+            const spy = self.emit;
+            const call = spy.getCall(0);
 
             call.args[0].should.be.equal('error');
 
-            var error = call.args[1];
+            const error = call.args[1];
 
             error.message.should.be.equal('Content-type audio/mp4 is not supported');
         });
 
         it('should emit end', () => {
-            var spy = self.emit;
+            const spy = self.emit;
 
             spy.getCall(1).args[0].should.be.equal('end');
         });
     });
+
 });
