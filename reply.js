@@ -28,7 +28,7 @@ exports.process = function (msg) {
 
     function init() {
         contentType = getContentType();
-        responseBody = msg.body.responseBody;
+        responseBody = msg.body.responseBody? msg.body.responseBody : msg.body;
     }
 
     function emitReply() {
