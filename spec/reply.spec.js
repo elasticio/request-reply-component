@@ -25,7 +25,9 @@ describe('Reply', () => {
             }
         });
 
-        msg.original_message = messages.newMessageWithBody({test: 'test'});
+        msg.original_message = messages.newMessageWithBody({
+            test: 'test'
+        });
         msg.original_message.headers = {
             some: 'header'
         };
@@ -36,7 +38,7 @@ describe('Reply', () => {
 
         before((done) => {
             reply.process.bind(self)(msg);
-            setTimeout(done, 50)
+            setTimeout(done, 50);
         });
 
         it('should emit reply and original message', () => {
@@ -71,21 +73,69 @@ describe('Reply', () => {
         });
     });
 
+    describe('for message without reply_to header', () => {
+        const self = {
+            emit: sinon.spy()
+        };
+
+        let msg = messages.newMessageWithBody({
+            contentType: 'application/json',
+            responseBody: {
+                greeting: 'Hello, world!'
+            },
+            customHeaders: {
+                'X-Test-Header1': 'test1',
+                'X-Test-Header2': 'test2'
+            }
+        });
+
+        msg.original_message = messages.newMessageWithBody({
+            test: 'test'
+        });
+
+        msg.original_message.headers = {
+            some: 'header'
+        };
+
+        before((done) => {
+            reply.process.bind(self)(msg);
+            setTimeout(done, 50);
+        });
+
+        it('should emit only original message', () => {
+            const spy = self.emit;
+
+            spy.callCount.should.be.equal(2);
+
+            spy.getCall(0).args[0].should.be.equal('data');
+            spy.getCall(1).args[0].should.be.equal('end');
+
+            // original message
+            spy.getCall(0).args[1].headers.should.be.deep.equal({
+                some: 'header'
+            });
+
+            spy.getCall(0).args[1].body.should.be.deep.equal({
+                test: 'test'
+            });
+        });
+    });
+
     describe('for message with empty body', () => {
         const self = {
             emit: sinon.spy()
         };
 
         let msg = {
-            headers : {
-               reply_to: 'my_routing_key_123'
+            headers: {
+                reply_to: 'my_routing_key_123'
             }
         };
 
         before((done) => {
 
             reply.process.bind(self)(msg);
-            setTimeout(done, 50)
+            setTimeout(done, 50);
         });
 
         it('should emit error', () => {
@@ -112,7 +162,7 @@ describe('Reply', () => {
         };
 
         let msg = {
-            headers : {
+            headers: {
                 reply_to: 'my_routing_key_123'
             },
             body: {
@@ -122,7 +172,7 @@ describe('Reply', () => {
 
         before((done) => {
             reply.process.bind(self)(msg);
-            setTimeout(done, 50)
+            setTimeout(done, 50);
         });
 
         it('should have send two data and one end', () => {
@@ -171,7 +221,7 @@ describe('Reply', () => {
 
         before((done) => {
             reply.process.bind(self)(msg);
-            setTimeout(done, 50)
+            setTimeout(done, 50);
         });
 
         it('should emit error', () => {
