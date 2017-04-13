@@ -1,23 +1,23 @@
-"use strict";
-let Q = require("q");
-let debug = require('debug')('request-reply');
-let messages = require('elasticio-node').messages;
+'use strict';
+
+const Q = require('q');
+const debug = require('debug')('request-reply');
+const messages = require('elasticio-node').messages;
 
 const HEADER_CONTENT_TYPE = 'Content-Type';
 const HEADER_ROUTING_KEY = 'X-EIO-Routing-Key';
 const DEFAULT_CONTENT_TYPE = 'application/json';
 
-exports.process = function (msg) {
-    let replyTo = msg.headers.reply_to;
+exports.process = function process(msg) {
+    const replyTo = msg.headers.reply_to;
 
     console.log(`Received new message, replyTo=${replyTo}`);
-    debug('Received new message:%j', msg);
+    debug('Received new message: %j', msg);
 
-    var contentType;
-    var responseBody;
+    let contentType;
+    let responseBody;
 
-    var self = this;
-
+    const self = this;
 
     Q()
         .then(init)
@@ -31,15 +31,18 @@ exports.process = function (msg) {
         if (!msg.body.responseBody) {
             debug('Field responseBody on the message body was empty, we will reply with the whole message body');
         }
-        responseBody = msg.body.responseBody? msg.body.responseBody : msg.body;
+        responseBody = msg.body.responseBody ? msg.body.responseBody : msg.body;
     }
 
     function emitReply() {
+        if (!replyTo) {
+            return;
+        }
 
         console.log(`Replying to ${replyTo}`);
         console.log(`Response content type is ${contentType}`);
 
-        var reply = messages.newMessageWithBody(responseBody);
+        const reply = messages.newMessageWithBody(responseBody);
         reply.headers[HEADER_ROUTING_KEY] = replyTo;
         reply.headers[HEADER_CONTENT_TYPE] = contentType;
 
@@ -53,7 +56,7 @@ exports.process = function (msg) {
     }
 
     function getContentType() {
-        var contentType = msg.body.contentType;
+        const contentType = msg.body.contentType;
 
         if (contentType) {
             if (/^application|text\//.test(contentType)) {
@@ -79,7 +82,7 @@ exports.process = function (msg) {
     }
 
     function onError(e) {
-        console.log(e);
+        console.error(e.stack);
         self.emit('error', e);
     }
 
