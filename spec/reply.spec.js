@@ -60,11 +60,6 @@ describe('Reply', () => {
                 greeting: 'Hello, world!'
             });
 
-            // original message
-            spy.getCall(1).args[1].headers.should.be.deep.equal({
-                some: 'header'
-            });
-
             spy.getCall(1).args[1].body.should.be.deep.equal({
                 test: 'test'
             });

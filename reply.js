@@ -71,11 +71,11 @@ exports.process = function (msg) {
 
         if (origMessage) {
             debug('Emitting original message');
-            return self.emit('data', origMessage.body);
+            return self.emit('data', messages.newMessageWithBody(origMessage.body));
         }
 
         debug('Original message not found. Emitting data.');
-        self.emit('data', msg.body);
+        self.emit('data', messages.newMessageWithBody(msg.body));
     }
 
     function onError(e) {
