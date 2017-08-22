@@ -71,11 +71,17 @@ exports.process = function (msg) {
 
         if (origMessage) {
             debug('Emitting original message');
-            return self.emit('data', origMessage);
+
+            delete origMessage.body.elasticio;
+
+            return self.emit('data', messages.newMessageWithBody(origMessage.body));
         }
 
         debug('Original message not found. Emitting data.');
-        self.emit('data', msg);
+
+        delete msg.body.elasticio;
+
+        self.emit('data', messages.newMessageWithBody(msg.body));
     }
 
     function onError(e) {
