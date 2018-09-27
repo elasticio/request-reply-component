@@ -69,15 +69,7 @@ exports.process = function (msg) {
     function emitData() {
         const origMessage = msg.original_message;
 
-        if (origMessage) {
-            debug('Emitting original message');
-
-            delete origMessage.body.elasticio;
-
-            return self.emit('data', messages.newMessageWithBody(origMessage.body));
-        }
-
-        debug('Original message not found. Emitting data.');
+        debug('Emitting data...');
 
         delete msg.body.elasticio;
 

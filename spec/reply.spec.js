@@ -25,11 +25,6 @@ describe('Reply', () => {
             }
         });
 
-        msg.original_message = messages.newMessageWithBody({test: 'test'});
-        msg.original_message.headers = {
-            some: 'header'
-        };
-
         msg.headers = {
             reply_to: 'my_routing_key_123'
         };
@@ -61,7 +56,14 @@ describe('Reply', () => {
             });
 
             spy.getCall(1).args[1].body.should.be.deep.equal({
-                test: 'test'
+                contentType: 'application/json',
+                responseBody: {
+                    greeting: 'Hello, world!'
+                },
+                customHeaders: {
+                    'X-Test-Header1': 'test1',
+                    'X-Test-Header2': 'test2'
+                }
             });
         });
     });
