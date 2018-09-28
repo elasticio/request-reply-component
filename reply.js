@@ -67,8 +67,6 @@ exports.process = function (msg) {
     }
 
     function emitData() {
-        const origMessage = msg.original_message;
-
         debug('Emitting data...');
 
         delete msg.body.elasticio;
