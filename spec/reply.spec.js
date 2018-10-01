@@ -25,11 +25,6 @@ describe('Reply', () => {
             }
         });
 
-        msg.original_message = messages.newMessageWithBody({test: 'test'});
-        msg.original_message.headers = {
-            some: 'header'
-        };
-
         msg.headers = {
             reply_to: 'my_routing_key_123'
         };
@@ -61,7 +56,14 @@ describe('Reply', () => {
             });
 
             spy.getCall(1).args[1].body.should.be.deep.equal({
-                test: 'test'
+                contentType: 'application/json',
+                responseBody: {
+                    greeting: 'Hello, world!'
+                },
+                customHeaders: {
+                    'X-Test-Header1': 'test1',
+                    'X-Test-Header2': 'test2'
+                }
             });
         });
     });
@@ -97,6 +99,48 @@ describe('Reply', () => {
         it('should emit end', () => {
             const spy = self.emit;
             spy.getCall(1).args[0].should.be.equal('end');
+        });
+    });
+
+    describe('no reply_to', () => {
+        const self = {
+            emit: sinon.spy()
+        };
+
+        let msg = messages.newMessageWithBody({
+            contentType: 'application/json',
+            responseBody: {
+                greeting: 'Hello, world!'
+            },
+            customHeaders: {
+                'X-Test-Header1': 'test1',
+                'X-Test-Header2': 'test2'
+            }
+        });
+
+        before((done) => {
+            reply.process.bind(self)(msg);
+            setTimeout(done, 50)
+        });
+
+        it('should emit only original message', () => {
+            const spy = self.emit;
+
+            spy.callCount.should.be.equal(2);
+
+            spy.getCall(0).args[0].should.be.equal('data');
+            spy.getCall(1).args[0].should.be.equal('end');
+
+            spy.getCall(0).args[1].body.should.be.deep.equal({
+                contentType: 'application/json',
+                responseBody: {
+                    greeting: 'Hello, world!'
+                },
+                customHeaders: {
+                    'X-Test-Header1': 'test1',
+                    'X-Test-Header2': 'test2'
+                }
+            });
         });
     });
 
