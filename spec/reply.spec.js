@@ -102,6 +102,48 @@ describe('Reply', () => {
         });
     });
 
+    describe('no reply_to', () => {
+        const self = {
+            emit: sinon.spy()
+        };
+
+        let msg = messages.newMessageWithBody({
+            contentType: 'application/json',
+            responseBody: {
+                greeting: 'Hello, world!'
+            },
+            customHeaders: {
+                'X-Test-Header1': 'test1',
+                'X-Test-Header2': 'test2'
+            }
+        });
+
+        before((done) => {
+            reply.process.bind(self)(msg);
+            setTimeout(done, 50)
+        });
+
+        it('should emit only original message', () => {
+            const spy = self.emit;
+
+            spy.callCount.should.be.equal(2);
+
+            spy.getCall(0).args[0].should.be.equal('data');
+            spy.getCall(1).args[0].should.be.equal('end');
+
+            spy.getCall(0).args[1].body.should.be.deep.equal({
+                contentType: 'application/json',
+                responseBody: {
+                    greeting: 'Hello, world!'
+                },
+                customHeaders: {
+                    'X-Test-Header1': 'test1',
+                    'X-Test-Header2': 'test2'
+                }
+            });
+        });
+    });
+
 
     describe('for message with non-existing responseBody', () => {
         const self = {
