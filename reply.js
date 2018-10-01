@@ -35,6 +35,10 @@ exports.process = function (msg) {
     }
 
     function emitReply() {
+        // Don't emit this message when running sample data
+        if(!replyTo) {
+            return;
+        }
 
         console.log(`Replying to ${replyTo}`);
         console.log(`Response content type is ${contentType}`);
