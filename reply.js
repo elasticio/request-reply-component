@@ -1,23 +1,20 @@
 "use strict";
-let Q = require("q");
-let debug = require('debug')('request-reply');
-let messages = require('elasticio-node').messages;
+const Q = require("q");
+const messages = require('elasticio-node').messages;
 
 const HEADER_CONTENT_TYPE = 'Content-Type';
 const HEADER_ROUTING_KEY = 'X-EIO-Routing-Key';
 const DEFAULT_CONTENT_TYPE = 'application/json';
 
 exports.process = function (msg) {
-    let replyTo = msg.headers.reply_to;
+    const replyTo = msg.headers.reply_to;
 
-    console.log(`Received new message, replyTo=${replyTo}`);
-    debug('Received new message:%j', msg);
+    this.logger.info(`Received new message, replyTo=${replyTo}`);
+    this.logger.debug('Received new message:%j', msg);
 
-    var contentType;
-    var responseBody;
-
-    var self = this;
-
+    let contentType;
+    let responseBody;
+    const self = this;
 
     Q()
         .then(init)
@@ -29,35 +26,35 @@ exports.process = function (msg) {
     function init() {
         contentType = getContentType();
         if (!msg.body.responseBody) {
-            debug('Field responseBody on the message body was empty, we will reply with the whole message body');
+            self.logger.debug('Field responseBody on the message body was empty, we will reply with the whole message body');
         }
-        responseBody = msg.body.responseBody? msg.body.responseBody : msg.body;
+        responseBody = msg.body.responseBody ? msg.body.responseBody : msg.body;
     }
 
     function emitReply() {
         // Don't emit this message when running sample data
-        if(!replyTo) {
+        if (!replyTo) {
             return;
         }
 
-        console.log(`Replying to ${replyTo}`);
-        console.log(`Response content type is ${contentType}`);
+        self.logger.info(`Replying to ${replyTo}`);
+        self.logger.info(`Response content type is ${contentType}`);
 
-        var reply = messages.newMessageWithBody(responseBody);
+        const reply = messages.newMessageWithBody(responseBody);
         reply.headers[HEADER_ROUTING_KEY] = replyTo;
         reply.headers[HEADER_CONTENT_TYPE] = contentType;
 
         if (msg.body.customHeaders) {
-            console.log('Applying custom headers: %j', msg.body.customHeaders);
+            self.logger.info('Applying custom headers: %j', msg.body.customHeaders);
             Object.assign(reply.headers, msg.body.customHeaders);
         }
 
-        debug('Replying with %j', reply);
+        self.logger.debug('Replying with %j', reply);
         self.emit('data', reply);
     }
 
     function getContentType() {
-        var contentType = msg.body.contentType;
+        const contentType = msg.body.contentType;
 
         if (contentType) {
             if (/^application|text\//.test(contentType)) {
@@ -71,7 +68,7 @@ exports.process = function (msg) {
     }
 
     function emitData() {
-        debug('Emitting data...');
+        self.logger.info('Emitting data...');
 
         delete msg.body.elasticio;
 
@@ -79,12 +76,12 @@ exports.process = function (msg) {
     }
 
     function onError(e) {
-        console.log(e);
+        self.logger.error(e.toString());
         self.emit('error', e);
     }
 
     function onEnd() {
-        console.log(`Finished processing message for replyTo=${replyTo}`);
+        self.logger.info(`Finished processing message for replyTo=${replyTo}`);
         self.emit('end');
     }
 };

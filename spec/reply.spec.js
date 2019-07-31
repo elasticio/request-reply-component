@@ -5,13 +5,19 @@ describe('Reply', () => {
     process.env.DEBUG = 'request-reply';
 
     const sinon = require('sinon');
-    const should = require('chai').should();
+    require('chai').should();
     const reply = require('../reply.js');
     const messages = require('elasticio-node').messages;
+    const logger = {
+        info: sinon.stub(),
+        debug: sinon.stub(),
+        error: sinon.stub()
+    };
 
     describe('for message with body', () => {
         const self = {
-            emit: sinon.spy()
+            emit: sinon.spy(),
+            logger
         };
 
         let msg = messages.newMessageWithBody({
@@ -70,7 +76,8 @@ describe('Reply', () => {
 
     describe('for message with empty body', () => {
         const self = {
-            emit: sinon.spy()
+            emit: sinon.spy(),
+            logger
         };
 
         let msg = {
@@ -104,7 +111,8 @@ describe('Reply', () => {
 
     describe('no reply_to', () => {
         const self = {
-            emit: sinon.spy()
+            emit: sinon.spy(),
+            logger
         };
 
         let msg = messages.newMessageWithBody({
@@ -147,7 +155,8 @@ describe('Reply', () => {
 
     describe('for message with non-existing responseBody', () => {
         const self = {
-            emit: sinon.spy()
+            emit: sinon.spy(),
+            logger
         };
 
         let msg = {
@@ -201,7 +210,8 @@ describe('Reply', () => {
 
     describe('Invalid content type', () => {
         const self = {
-            emit: sinon.spy()
+            emit: sinon.spy(),
+            logger
         };
 
         let msg = messages.newMessageWithBody({
