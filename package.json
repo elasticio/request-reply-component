@@ -1,6 +1,6 @@
 {
   "name": "request-reply",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "elastic.io request-reply component",
   "engine": {
     "node": "5.1.0"

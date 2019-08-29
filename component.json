@@ -2,6 +2,7 @@
   "title": "HTTP Reply",
   "service": "request-reply",
   "description": "Used to reply to HTTP webhooks",
+  "buildType":"docker",
   "actions": {
     "reply": {
       "title": "Reply",
