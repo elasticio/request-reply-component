@@ -10,15 +10,13 @@
     "test": "mocha spec --recursive"
   },
   "dependencies": {
-    "chai": "^3.5.0",
     "elasticio-node": "0.0.8",
     "elasticio-sailor-nodejs": "2.4.2",
-    "mocha": "^2.4.5",
-    "q": "^1.4.1"
+    "q": "1.4.1"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
-    "mocha": "^2.4.5",
-    "sinon": "^1.17.3"
+    "chai": "3.5.0",
+    "mocha": "2.4.5",
+    "sinon": "1.17.3"
   }
 }
