@@ -7,7 +7,7 @@
   },
   "author": "elastic.io GmbH",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha --recursive spec"
+    "test": "mocha spec --recursive"
   },
   "dependencies": {
     "chai": "^3.5.0",
