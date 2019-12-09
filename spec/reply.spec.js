@@ -1,23 +1,19 @@
 'use strict';
 
+const sinon = require('sinon');
+require('chai').should();
+const reply = require('../reply.js');
+const {messages} = require('elasticio-node');
+const logger = require('@elastic.io/component-logger')();
+
 describe('Reply', () => {
     process.env.ELASTICIO_EXEC_ID = 'my_exec_123';
     process.env.DEBUG = 'request-reply';
 
-    const sinon = require('sinon');
-    require('chai').should();
-    const reply = require('../reply.js');
-    const messages = require('elasticio-node').messages;
-    const logger = {
-        info: sinon.stub(),
-        debug: sinon.stub(),
-        error: sinon.stub()
-    };
-
     describe('for message with body', () => {
         const self = {
             emit: sinon.spy(),
-            logger
+            logger,
         };
 
         let msg = messages.newMessageWithBody({

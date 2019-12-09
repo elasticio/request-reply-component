@@ -1,6 +1,6 @@
 {
   "name": "request-reply",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "elastic.io request-reply component",
   "engine": {
     "node": "5.1.0"
@@ -10,15 +10,14 @@
     "test": "./node_modules/mocha/bin/mocha --recursive spec"
   },
   "dependencies": {
-    "chai": "^3.5.0",
     "elasticio-node": "0.0.8",
-    "elasticio-sailor-nodejs": "2.4.2",
-    "mocha": "^2.4.5",
+    "elasticio-sailor-nodejs": "2.5.1",
     "q": "^1.4.1"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
-    "mocha": "^2.4.5",
-    "sinon": "^1.17.3"
+    "@elastic.io/component-logger": "0.0.1",
+    "chai": "3.5.0",
+    "mocha": "2.5.3",
+    "sinon": "1.17.7"
   }
 }
