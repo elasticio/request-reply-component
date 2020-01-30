@@ -1,23 +1,30 @@
 {
   "name": "request-reply",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "elastic.io request-reply component",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:elasticio/request-reply-component.git"
+  },
   "engine": {
-    "node": "5.1.0"
+    "node": "12"
   },
   "author": "elastic.io GmbH",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha --recursive spec"
   },
   "dependencies": {
-    "elasticio-node": "0.0.8",
-    "elasticio-sailor-nodejs": "2.5.1",
-    "q": "^1.4.1"
+    "elasticio-node": "0.0.9",
+    "elasticio-sailor-nodejs": "2.6.1",
+    "q": "1.5.1"
   },
   "devDependencies": {
     "@elastic.io/component-logger": "0.0.1",
     "chai": "3.5.0",
     "mocha": "2.5.3",
-    "sinon": "1.17.7"
+    "sinon": "1.17.7",
+    "eslint": "6.8.0",
+    "eslint-config-airbnb-base": "14.0.0",
+    "eslint-plugin-import": "2.20.0"
   }
 }
