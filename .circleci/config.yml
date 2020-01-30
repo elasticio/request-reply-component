@@ -52,10 +52,3 @@ workflows:
   build_and_test:
     jobs:
       - build
-  deploy_docs:
-    jobs:
-      - docs:
-          filters:
-            branches:
-              only:
-                - master
