@@ -1,6 +1,6 @@
 {
   "name": "request-reply",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "elastic.io request-reply component",
   "repository": {
     "type": "git",
@@ -15,16 +15,16 @@
   },
   "dependencies": {
     "elasticio-node": "0.0.9",
-    "elasticio-sailor-nodejs": "2.6.1",
-    "q": "1.5.1"
+    "elasticio-sailor-nodejs": "2.6.7",
+    "q": "2.0.3"
   },
   "devDependencies": {
     "@elastic.io/component-logger": "0.0.1",
-    "chai": "3.5.0",
-    "mocha": "2.5.3",
-    "sinon": "1.17.7",
-    "eslint": "6.8.0",
-    "eslint-config-airbnb-base": "14.0.0",
-    "eslint-plugin-import": "2.20.0"
+    "chai": "4.2.0",
+    "mocha": "7.1.2",
+    "sinon": "9.0.2",
+    "eslint": "7.0.0",
+    "eslint-config-airbnb-base": "14.1.0",
+    "eslint-plugin-import": "2.20.2"
   }
 }
