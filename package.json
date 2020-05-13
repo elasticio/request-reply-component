@@ -6,8 +6,8 @@
     "type": "git",
     "url": "git@github.com:elasticio/request-reply-component.git"
   },
-  "engine": {
-    "node": ">=12"
+  "engines": {
+    "node": ">=12.13.0"
   },
   "author": "elastic.io GmbH",
   "scripts": {
