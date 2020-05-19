@@ -9,8 +9,8 @@ const DEFAULT_CONTENT_TYPE = 'application/json';
 exports.process = function (msg) {
     const replyTo = msg.headers.reply_to;
 
-    this.logger.info(`Received new message, replyTo=${replyTo}`);
-    this.logger.debug('Received new message:%j', msg);
+    this.logger.info(`Received new message, replyTo: ${replyTo}`);
+    this.logger.debug('Received new message: %j', msg);
 
     let contentType;
     let responseBody;
@@ -20,7 +20,7 @@ exports.process = function (msg) {
         .then(init)
         .then(emitReply)
         .then(emitData)
-        .fail(onError)
+        .catch(onError)
         .finally(onEnd);
 
     function init() {
@@ -37,15 +37,15 @@ exports.process = function (msg) {
             return;
         }
 
-        self.logger.info(`Replying to ${replyTo}`);
-        self.logger.info(`Response content type is ${contentType}`);
+        self.logger.debug(`Replying to ${replyTo}`);
+        self.logger.debug(`Response content type is ${contentType}`);
 
         const reply = messages.newMessageWithBody(responseBody);
         reply.headers[HEADER_ROUTING_KEY] = replyTo;
         reply.headers[HEADER_CONTENT_TYPE] = contentType;
 
         if (msg.body.customHeaders) {
-            self.logger.info('Applying custom headers: %j', msg.body.customHeaders);
+            self.logger.debug('Applying custom headers: %j', msg.body.customHeaders);
             Object.assign(reply.headers, msg.body.customHeaders);
         }
 
@@ -81,7 +81,7 @@ exports.process = function (msg) {
     }
 
     function onEnd() {
-        self.logger.info(`Finished processing message for replyTo=${replyTo}`);
+        self.logger.debug(`Finished processing message for replyTo: ${replyTo}`);
         self.emit('end');
     }
 };

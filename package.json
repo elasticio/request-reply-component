@@ -1,13 +1,13 @@
 {
   "name": "request-reply",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "elastic.io request-reply component",
   "repository": {
     "type": "git",
     "url": "git@github.com:elasticio/request-reply-component.git"
   },
-  "engine": {
-    "node": "12"
+  "engines": {
+    "node": ">=12.13.0"
   },
   "author": "elastic.io GmbH",
   "scripts": {
@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "elasticio-node": "0.0.9",
-    "elasticio-sailor-nodejs": "2.6.1",
+    "elasticio-sailor-nodejs": "2.6.7",
     "q": "1.5.1"
   },
   "devDependencies": {
