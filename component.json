@@ -30,6 +30,13 @@
               "type": "string",
               "required": true,
               "maxLength": 1000
+            },
+            "statusCode": {
+                "title": "Response Status Code",
+                "type": "number",
+                "minimum": 0,
+                "maximum": 599,
+                "required": false
             }
           }
         },

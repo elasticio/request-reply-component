@@ -5,6 +5,7 @@ const messages = require('elasticio-node').messages;
 const HEADER_CONTENT_TYPE = 'Content-Type';
 const HEADER_ROUTING_KEY = 'X-EIO-Routing-Key';
 const DEFAULT_CONTENT_TYPE = 'application/json';
+const HEADER_STATUS_CODE = 'x-eio-status-code';
 
 exports.process = function (msg) {
     const replyTo = msg.headers.reply_to;
@@ -47,6 +48,10 @@ exports.process = function (msg) {
         if (msg.body.customHeaders) {
             self.logger.debug('Applying custom headers: %j', msg.body.customHeaders);
             Object.assign(reply.headers, msg.body.customHeaders);
+        }
+
+        if (msg.body.statusCode) {
+            reply.headers[HEADER_STATUS_CODE] = msg.body.statusCode; 
         }
 
         self.logger.debug('Replying with %j', reply);
