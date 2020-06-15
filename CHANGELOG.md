@@ -1,3 +1,6 @@
+## 1.1.0 (June 15, 2020)
+* Make it possible to configure response status code
+
 ## 1.0.4 (May 19, 2020)
 
 * Update sailor version to 2.6.7
