@@ -42,6 +42,14 @@
         },
         "out": {}
       }
+    },
+    "reply_lightweight": {
+      "title": "Reply-Lightweight",
+      "main": "./reply-lightweight.js",
+      "metadata": {
+        "in": {},
+        "out": {}
+      }
     }
   }
 }
