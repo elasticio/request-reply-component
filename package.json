@@ -1,6 +1,6 @@
 {
   "name": "request-reply",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "elastic.io request-reply component",
   "repository": {
     "type": "git",
