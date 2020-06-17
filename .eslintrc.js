@@ -13,7 +13,7 @@ module.exports = {
     mocha: true
   },
   "parserOptions": {
-    "ecmaVersion": 8
+    "ecmaVersion": 2018
   },
   'extends': 'airbnb-base',
   'rules': {
@@ -33,7 +33,8 @@ module.exports = {
       ERROR,
       ALWAYS
     ],
-    'func-names': ERROR,
+    'func-names': 0,
+    'no-shadow': 0,
     'no-empty': ERROR,
     'no-empty-function': ERROR,
     'brace-style': [
@@ -71,9 +72,10 @@ module.exports = {
       WARN,
       'as-needed'
     ],
+    'arrow-parens': 0,
     'array-bracket-spacing': ERROR,
     'space-in-parens': ERROR,
-    'comma-dangle': ERROR,
+    'comma-dangle': 0,
     'no-trailing-spaces': ERROR,
     'yoda': ERROR,
     'max-len': [
@@ -101,9 +103,6 @@ module.exports = {
     'object-curly-newline':  [
       ERROR,
       {
-        ObjectExpression: {
-          minProperties: 1
-        },
         ObjectPattern: {
           minProperties: 5
         }

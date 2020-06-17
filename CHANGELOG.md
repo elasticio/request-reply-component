@@ -1,3 +1,5 @@
+## 1.1.1 (June 17, 2020)
+* Add action that able to handle large messages stored in external storage instead of amqp
 ## 1.1.0 (June 15, 2020)
 * Make it possible to configure response status code
 
