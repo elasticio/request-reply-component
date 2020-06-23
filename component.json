@@ -42,17 +42,6 @@
         },
         "out": {}
       }
-    },
-    "reply_lightweight": {
-      "help": {
-          "description": "Send reply to webhook using response body from external storage."
-      },
-      "title": "Reply-Lightweight",
-      "main": "./reply-lightweight.js",
-      "metadata": {
-        "in": {},
-        "out": {}
-      }
     }
   }
 }
