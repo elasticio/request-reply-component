@@ -1,5 +1,6 @@
+"use strict";
 const Q = require("q");
-const { messages } = require('elasticio-node');
+const messages = require('elasticio-node').messages;
 
 const HEADER_CONTENT_TYPE = 'Content-Type';
 const HEADER_ROUTING_KEY = 'X-EIO-Routing-Key';
@@ -14,7 +15,7 @@ exports.process = function (msg) {
 
     let contentType;
     let responseBody;
-    const self = this; //eslint-disable-line
+    const self = this;
 
     Q()
         .then(init)
@@ -26,7 +27,7 @@ exports.process = function (msg) {
     function init() {
         contentType = getContentType();
         if (!msg.body.responseBody) {
-            self.logger.debug('Field responseBody on the message body was empty, we will reply with the whole message body'); // eslint-disable-line
+            self.logger.debug('Field responseBody on the message body was empty, we will reply with the whole message body');
         }
         responseBody = msg.body.responseBody ? msg.body.responseBody : msg.body;
     }
@@ -50,7 +51,7 @@ exports.process = function (msg) {
         }
 
         if (msg.body.statusCode) {
-            reply.headers[HEADER_STATUS_CODE] = msg.body.statusCode;
+            reply.headers[HEADER_STATUS_CODE] = msg.body.statusCode; 
         }
 
         self.logger.debug('Replying with %j', reply);
@@ -58,7 +59,7 @@ exports.process = function (msg) {
     }
 
     function getContentType() {
-        const contentType = msg.body.contentType; //eslint-disable-line
+        const contentType = msg.body.contentType;
 
         if (contentType) {
             if (/^application|text\//.test(contentType)) {
@@ -74,7 +75,8 @@ exports.process = function (msg) {
     function emitData() {
         self.logger.info('Emitting data...');
 
-        delete msg.body.elasticio; // eslint-disable-line
+        delete msg.body.elasticio;
+
         self.emit('data', messages.newMessageWithBody(msg.body));
     }
 
