@@ -53,6 +53,44 @@
         "in": {},
         "out": {}
       }
+    },
+    "replyWithAttachment": {
+      "title": "Reply With Attachment",
+      "main": "./replyWithAttachment.js",
+      "fields": {
+        "customHeaders": {
+          "label": "Custom HTTP Headers",
+          "required": false,
+          "viewClass": "InMetadataExtensionView",
+          "placeholder": "Header names separated by comma (e.g Content-Type,Content-Language)",
+          "titlePrefix": "Header"
+        }
+      },
+      "metadata": {
+        "in": {
+          "type": "object",
+          "properties": {
+            "contentType": {
+              "title": "Content Type (default application/json)",
+              "type": "string",
+              "required": false
+            },
+            "responseUrl": {
+              "title": "Url To Provide as Response",
+              "type": "string",
+              "required": true
+            },
+            "statusCode": {
+              "title": "Response Status Code",
+              "type": "number",
+              "minimum": 0,
+              "maximum": 599,
+              "required": false
+            }
+          }
+        },
+        "out": {}
+      }
     }
   }
 }
