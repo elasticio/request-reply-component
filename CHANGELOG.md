@@ -1,3 +1,6 @@
+## 1.1.1 (October 2, 2020)
+* Remove sensitive data from logs
+
 ## 1.1.0 (June 15, 2020)
 * Make it possible to configure response status code
 
