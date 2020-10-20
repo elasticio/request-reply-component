@@ -1,5 +1,9 @@
+## 1.1.2 (October 21, 2020)
+
+* Update sailor version to 2.6.17
+
 ## 1.1.1 (October 2, 2020)
-* Remove sensitive data from logs
+* Annual audit of the component code to check if it exposes a sensitive data in the logs
 
 ## 1.1.0 (June 15, 2020)
 * Make it possible to configure response status code
