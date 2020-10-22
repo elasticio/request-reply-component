@@ -11,7 +11,6 @@ exports.process = function (msg) {
     const replyTo = msg.headers.reply_to;
 
     this.logger.info('Received new message');
-    this.logger.trace('Received new message: %j', msg);
 
     let contentType;
     let responseBody;
@@ -39,15 +38,14 @@ exports.process = function (msg) {
         }
 
         self.logger.info('About to reply');
-        self.logger.trace(`Replying to ${replyTo}`);
-        self.logger.trace(`Response content type is ${contentType}`);
+        self.logger.debug(`Response content type is ${contentType}`);
 
         const reply = messages.newMessageWithBody(responseBody);
         reply.headers[HEADER_ROUTING_KEY] = replyTo;
         reply.headers[HEADER_CONTENT_TYPE] = contentType;
 
         if (msg.body.customHeaders) {
-            self.logger.trace('Applying custom headers: %j', msg.body.customHeaders);
+            self.logger.debug('Applying custom headers...');
             Object.assign(reply.headers, msg.body.customHeaders);
         }
 
@@ -55,7 +53,7 @@ exports.process = function (msg) {
             reply.headers[HEADER_STATUS_CODE] = msg.body.statusCode;
         }
 
-        self.logger.trace('Replying with %j', reply);
+        self.logger.debug('Sending reply');
         self.emit('data', reply);
     }
 
@@ -82,12 +80,12 @@ exports.process = function (msg) {
     }
 
     function onError(e) {
-        self.logger.error(e.toString());
+        self.logger.error('Error occurred');
         self.emit('error', e);
     }
 
     function onEnd() {
-        self.logger.trace(`Finished processing message for replyTo: ${replyTo}`);
+        self.logger.debug('Finished processing message');
         self.emit('end');
     }
 };
