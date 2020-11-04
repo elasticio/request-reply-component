@@ -1,3 +1,7 @@
+## 1.1.3 (November 6, 2020)
+
+* Update sailor version to 2.6.18
+
 ## 1.1.2 (October 21, 2020)
 
 * Update sailor version to 2.6.17
