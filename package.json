@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "elasticio-node": "0.0.9",
-    "elasticio-sailor-nodejs": "2.6.23",
+    "elasticio-sailor-nodejs": "git://github.com/elasticio/sailor-nodejs.git#d20375cd986a870e0b3d6afcff597ad6a9b60142",
     "q": "1.5.1"
   },
   "devDependencies": {
