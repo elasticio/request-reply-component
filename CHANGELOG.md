@@ -1,5 +1,6 @@
 ## 1.1.5 (January 28, 2021)
 * Update sailor version to 2.6.2
+* Fix a bug with memoly leakage in Sailor
 
 ## 1.1.4 (January 15, 2021)
 * Update sailor version to 2.6.23
