@@ -54,7 +54,7 @@ exports.process = function (msg) {
         }
 
         self.logger.debug('Sending reply');
-        self.emit('data', reply);
+        return self.emit('data', reply);
     }
 
     function getContentType() {
@@ -76,16 +76,16 @@ exports.process = function (msg) {
 
         delete msg.body.elasticio;
 
-        self.emit('data', messages.newMessageWithBody(msg.body));
+        return self.emit('data', messages.newMessageWithBody(msg.body));
     }
 
     function onError(e) {
         self.logger.error('Error occurred');
-        self.emit('error', e);
+        return self.emit('error', e);
     }
 
     function onEnd() {
         self.logger.debug('Finished processing message');
-        self.emit('end');
+        return self.emit('end');
     }
 };
