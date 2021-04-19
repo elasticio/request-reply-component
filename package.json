@@ -12,6 +12,7 @@
   "author": "elastic.io GmbH",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha --recursive spec",
+    "lint": "echo 'no lint found'",
     "pretest": "npm run lint"
   },
   "dependencies": {
