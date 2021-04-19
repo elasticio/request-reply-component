@@ -30,8 +30,7 @@ exports.process = async function processMessage(msg) {
 
     console.log("data ", result.data);
 
-    const imageBuffer = fs.readFileSync("pikachu_8x8.png");
-    const dataUrl = bufferToDataUrl("image/png", imageBuffer);
+    const dataUrl = bufferToDataUrl("image/png", result.data);
     console.log("dataUrl", dataUrl);
 
     const reply = messages.newMessageWithBody(dataUrl);
