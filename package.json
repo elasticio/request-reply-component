@@ -12,15 +12,14 @@
   "author": "elastic.io GmbH",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha --recursive spec",
-    "lint": "eslint ./*.js spec/*.js",
     "pretest": "npm run lint"
   },
   "dependencies": {
     "@elastic.io/component-commons-library": "1.1.2",
     "elasticio-node": "0.0.9",
     "elasticio-sailor-nodejs": "2.6.7",
-    "q": "1.5.1",
-    "lodash": "4.17.15"
+    "lodash": "4.17.15",
+    "q": "1.5.1"
   },
   "devDependencies": {
     "@elastic.io/component-logger": "0.0.1",

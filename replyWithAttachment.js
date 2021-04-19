@@ -1,50 +1,82 @@
-const _ = require('lodash');
-const { messages } = require('elasticio-node');
-const { AttachmentProcessor, ApiKeyRestClient } = require('@elastic.io/component-commons-library');
-const crypto = require('crypto');
+const {
+  AttachmentProcessor,
+} = require("@elastic.io/component-commons-library");
+const { messages } = require("elasticio-node");
 
-const HEADER_ROUTING_KEY = 'x-eio-routing-key';
+const HEADER_CONTENT_TYPE = "Content-Type";
+const HEADER_ROUTING_KEY = "X-EIO-Routing-Key";
+const DEFAULT_CONTENT_TYPE = "application/json";
+const HEADER_STATUS_CODE = "x-eio-status-code";
 
-async function createMaesterAttachment(dataStream) {
-    const JWTToken = process.env.ELASTICIO_OBJECT_STORAGE_TOKEN;
-    const maesterUri = process.env.ELASTICIO_OBJECT_STORAGE_URI;
+export const process = async (msg) => {
+  this.logger.info(`Received new message, replyTo: ${replyTo}`);
+  this.logger.debug("Received new message: %j", msg);
 
+  const replyTo = msg.headers.reply_to;
+  if (!replyTo) return;
 
-    const PASSWORD = process.env.ELASTICIO_MESSAGE_CRYPTO_PASSWORD;
-    const VECTOR = process.env.ELASTICIO_MESSAGE_CRYPTO_IV;
-    const encryptedDataStream = encryptStream.call(this, dataStream, PASSWORD, VECTOR);
-    this.logger.info('Going to send stream to Maester');
-    const result = await sendStreamToStorage.call(this, encryptedDataStream, maesterUri, JWTToken)
-    this.logger.info('got result', result);
-    await this.emit('data', { body: { result }, headers: {'x-ipaas-object-storage-id': result.objectId} });
-    this.logger.info('Execution finished');
-}
+  const responseUrl = getResponseUrl(msg);
+  const contentType = getContentType(msg);
 
-exports.process = async function processMessage(msg) {
-    const maesterClient = new ApiKeyRestClient(this, {
-        apiKeyHeaderName: 
-    });
-    const replyTo = msg.headers.reply_to;
+  this.logger.debug(`Replying to ${replyTo}`);
+  this.logger.debug(`Response content type is ${contentType}`);
 
-    this.logger.info({ headers: msg.headers }, 'Received new lightweight message');
-    this.logger.debug('Received new message: %j', msg);
+  const result = await new AttachmentProcessor().getAttachment(
+    responseUrl,
+    contentType
+  );
+  this.logger.debug("result attachment ", result);
+  // const reply = messages.newMessageWithBody(responseUrl);
+  // reply.headers[HEADER_ROUTING_KEY] = replyTo;
+  // reply.headers[HEADER_CONTENT_TYPE] = contentType;
 
-    // Don't emit this message when running sample data
-    if (replyTo) {
-        this.logger.debug({ headers: msg.headers }, 'Replying');
-        const reply = messages.newMessageWithBody(msg.body);
-        // if message contains 'x-ipaas-object-storage-id' header then simply buypass it further
-        reply.headers = _.omit(msg.headers, 'reply_to');
-        reply.headers[HEADER_ROUTING_KEY] = replyTo;
-        this.logger.debug('Replying with %j', reply);
-        await this.emit('data', reply);
+  // if (msg.body.customHeaders) {
+  //   this.logger.debug("Applying custom headers: %j", msg.body.customHeaders);
+  //   Object.assign(reply.headers, msg.body.customHeaders);
+  // }
+
+  // if (msg.body.statusCode) {
+  //   reply.headers[HEADER_STATUS_CODE] = msg.body.statusCode;
+  // }
+
+  // this.logger.debug("Replying with %j", reply);
+  // this.emit("data", reply);
+
+  // emitData();
+  // onEnd();
+};
+
+const getResponseUrl = (msg) => {
+  if (!msg.body.responseUrl) {
+    this.logger.debug(
+      "Field responseUrl on the message body was empty, we will reply with the whole message body"
+    );
+  }
+  return msg.body.responseUrl ?? msg.body;
+};
+
+const getContentType = (msg) => {
+  const contentType = msg.body.contentType;
+
+  if (contentType) {
+    if (/^application|text\//.test(contentType)) {
+      return contentType;
     }
 
+    throw new Error(`Content-type ${contentType} is not supported`);
+  }
 
-    this.logger.debug({ headers: msg.headers }, 'Emitting data to next step');
-    const messageForNextStep = messages.newMessageWithBody(msg.body);
-    messageForNextStep.headers = _.omit(msg.headers, 'reply_to');
-    this.logger.debug('Data for next step with %j', messageForNextStep);
+  return DEFAULT_CONTENT_TYPE;
+};
 
-    return messageForNextStep;
+const emitData = () => {
+  this.logger.info("Emitting data...");
+
+  delete msg.body.elasticio; // eslint-disable-line
+  this.emit("data", messages.newMessageWithBody(msg.body));
+};
+
+const onEnd = () => {
+  this.logger.debug(`Finished processing message for replyTo: ${replyTo}`);
+  this.emit("end");
 };
