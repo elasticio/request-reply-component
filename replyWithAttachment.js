@@ -29,12 +29,12 @@ exports.process = async function processMessage(msg) {
 
     console.log("data ", result.data);
 
-    let buffer = Buffer.from(arraybuffer);
+    let buffer = Buffer.from(result.data);
     let arraybuffer = Uint8Array.from(buffer).buffer;
     console.log("buffer ", buffer);
     console.log("arraybuffer ", arraybuffer);
 
-    const reply = messages.newMessageWithBody(arraybuffer);
+    const reply = messages.newMessageWithBody(result.data);
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
     reply.headers[HEADER_CONTENT_TYPE] = contentType;
 
