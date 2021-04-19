@@ -19,31 +19,36 @@ exports.process = async function processMessage(msg) {
 
   console.log(`Replying to ${replyTo}`);
   console.log(`Response content type is ${contentType}`);
+  console.log(`Response url is ${responseUrl}`);
 
-  const result = await new AttachmentProcessor().getAttachment(
-    msg.responseUrl,
-    contentType
-  );
+  try {
+    const result = await new AttachmentProcessor().getAttachment(
+      responseUrl,
+      contentType
+    );
 
-  const reply = messages.newMessageWithBody(responseUrl);
-  reply.headers[HEADER_ROUTING_KEY] = replyTo;
-  reply.headers[HEADER_CONTENT_TYPE] = contentType;
+    const reply = messages.newMessageWithBody(result.data);
+    reply.headers[HEADER_ROUTING_KEY] = replyTo;
+    reply.headers[HEADER_CONTENT_TYPE] = contentType;
 
-  if (msg.body.customHeaders) {
-    this.logger.debug("Applying custom headers: %j", msg.body.customHeaders);
-    Object.assign(reply.headers, msg.body.customHeaders);
+    this.logger.debug("Replying with %j", reply);
+    this.emit("data", reply);
+
+    // emitData();
+    // onEnd();
+    this.emit("end");
+  } catch (err) {
+    console.log(88, err);
   }
 
-  if (msg.body.statusCode) {
-    reply.headers[HEADER_STATUS_CODE] = msg.body.statusCode;
-  }
+  // if (msg.body.customHeaders) {
+  //   this.logger.debug("Applying custom headers: %j", msg.body.customHeaders);
+  //   Object.assign(reply.headers, msg.body.customHeaders);
+  // }
 
-  this.logger.debug("Replying with %j", reply);
-  this.emit("data", reply);
-
-  // emitData();
-  // onEnd();
-  this.emit("end");
+  // if (msg.body.statusCode) {
+  //   reply.headers[HEADER_STATUS_CODE] = msg.body.statusCode;
+  // }
 };
 
 const getResponseUrl = (msg) => {
