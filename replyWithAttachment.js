@@ -27,22 +27,11 @@ exports.process = async function processMessage(msg) {
       contentType
     );
 
-    const blobToImage = (blob) => {
-      return new Promise((resolve) => {
-        const url = URL.createObjectURL(blob);
-        console.log("url", url);
-        let img = new Image();
-        img.onload = () => {
-          URL.revokeObjectURL(url);
-          resolve(img);
-        };
-        img.src = url;
-      });
-    };
-    const img = await blobToImage(result.data);
-    console.log("img ", img);
+    const smth = result.data.blob();
+    const url = URL.createObjectURL(smth);
+    console.log(smth, url);
 
-    const reply = messages.newMessageWithBody(img);
+    const reply = messages.newMessageWithBody(url);
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
     reply.headers[HEADER_CONTENT_TYPE] = contentType;
 
