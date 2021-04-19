@@ -2,6 +2,7 @@ const {
   AttachmentProcessor,
 } = require("@elastic.io/component-commons-library");
 const { messages } = require("elasticio-node");
+const bufferToDataUrl = require("buffer-to-data-url");
 
 const HEADER_CONTENT_TYPE = "Content-Type";
 const HEADER_ROUTING_KEY = "X-EIO-Routing-Key";
@@ -29,12 +30,11 @@ exports.process = async function processMessage(msg) {
 
     console.log("data ", result.data);
 
-    let buffer = Buffer.from(result.data);
-    let arraybuffer = Uint8Array.from(buffer).buffer;
-    console.log("buffer ", buffer);
-    console.log("arraybuffer ", arraybuffer);
+    const imageBuffer = fs.readFileSync("pikachu_8x8.png");
+    const dataUrl = bufferToDataUrl("image/png", imageBuffer);
+    console.log("dataUrl", dataUrl);
 
-    const reply = messages.newMessageWithBody(result.data);
+    const reply = messages.newMessageWithBody(dataUrl);
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
     reply.headers[HEADER_CONTENT_TYPE] = contentType;
 
