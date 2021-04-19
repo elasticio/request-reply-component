@@ -12,7 +12,7 @@ exports.process = async function processMessage(msg) {
   const replyTo = msg.headers.reply_to;
   console.log(`Received new message, replyTo: ${replyTo}`);
   console.log("Received new message: %j", msg);
-  console.log(msg.attachments?.["img.png"]?.url);
+  console.log("Attachment ", msg.attachments);
   // if (!replyTo) return;
 
   const responseUrl = getResponseUrl(msg);
