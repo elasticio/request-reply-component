@@ -15,7 +15,7 @@ exports.process = async function processMessage(msg) {
   // if (!replyTo) return;
 
   const responseUrl = getResponseUrl(msg);
-  const contentType = getContentType(msg);
+  const contentType = msg.body.contentType; // change to func
 
   console.log(`Replying to ${replyTo}`);
   console.log(`Response content type is ${contentType}`);
