@@ -24,7 +24,7 @@ exports.process = async function processMessage(msg) {
     msg.attachments["img.png"].url,
     contentType
   );
-  console.log("result attachment ", result.data);
+  console.log("result attachment ", typeof result.data, result.headers);
   // const reply = messages.newMessageWithBody(responseUrl);
   // reply.headers[HEADER_ROUTING_KEY] = replyTo;
   // reply.headers[HEADER_CONTENT_TYPE] = contentType;
