@@ -29,10 +29,14 @@ exports.process = async function processMessage(msg) {
   handler(result);
   async function handler(response) {
     let body = "";
-    for await (const chunk of response) {
-      let text = chunk.toString();
-      console.log(text);
-      body += text;
+    try {
+      for await (const chunk of response) {
+        let text = chunk.toString();
+        console.log(text);
+        body += text;
+      }
+    } catch (err) {
+      console.log(err);
     }
     console.log(body.length);
   }
