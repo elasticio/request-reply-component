@@ -7,7 +7,22 @@ const HEADER_CONTENT_TYPE = "Content-Type";
 const HEADER_ROUTING_KEY = "X-EIO-Routing-Key";
 const DEFAULT_CONTENT_TYPE = "application/json";
 const HEADER_STATUS_CODE = "x-eio-status-code";
+const fileRdr = (file) => {
+  const fileReader = new FileReader();
 
+  return new Promise((resolve, reject) => {
+    fileReader.onerror = () => {
+      fileReader.abort();
+      reject(new Error("Problem parsing file"));
+    };
+
+    fileReader.onload = () => {
+      resolve(fileReader.result);
+    };
+
+    fileReader.readAsText(file);
+  });
+};
 exports.process = async function processMessage(msg) {
   const replyTo = msg.headers.reply_to;
   console.log(`Received new message, replyTo: ${replyTo}`);
@@ -27,11 +42,10 @@ exports.process = async function processMessage(msg) {
       contentType
     );
 
-    const smth = result.data.blob();
-    const url = URL.createObjectURL(smth);
-    console.log(smth, url);
+    const smth = fileRdr(result.data);
+    console.log(smth);
 
-    const reply = messages.newMessageWithBody(url);
+    const reply = messages.newMessageWithBody(smth);
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
     reply.headers[HEADER_CONTENT_TYPE] = contentType;
 
