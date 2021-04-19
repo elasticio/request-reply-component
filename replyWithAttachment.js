@@ -8,7 +8,7 @@ const HEADER_ROUTING_KEY = "X-EIO-Routing-Key";
 const DEFAULT_CONTENT_TYPE = "application/json";
 const HEADER_STATUS_CODE = "x-eio-status-code";
 
-export const process = async (msg) => {
+exports.process = async (msg) => {
   this.logger.info(`Received new message, replyTo: ${replyTo}`);
   this.logger.debug("Received new message: %j", msg);
 
