@@ -9,10 +9,9 @@ const DEFAULT_CONTENT_TYPE = "application/json";
 const HEADER_STATUS_CODE = "x-eio-status-code";
 
 exports.process = async function processMessage(msg) {
+  const replyTo = msg.headers.reply_to;
   console.log(`Received new message, replyTo: ${replyTo}`);
   console.log("Received new message: %j", msg);
-
-  const replyTo = msg.headers.reply_to;
   if (!replyTo) return;
 
   const responseUrl = getResponseUrl(msg);
