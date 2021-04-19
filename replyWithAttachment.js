@@ -9,8 +9,8 @@ const DEFAULT_CONTENT_TYPE = "application/json";
 const HEADER_STATUS_CODE = "x-eio-status-code";
 
 exports.process = async function processMessage(msg) {
-  this.logger.info(`Received new message, replyTo: ${replyTo}`);
-  this.logger.debug("Received new message: %j", msg);
+  console.log(`Received new message, replyTo: ${replyTo}`);
+  console.log("Received new message: %j", msg);
 
   const replyTo = msg.headers.reply_to;
   if (!replyTo) return;
@@ -18,14 +18,14 @@ exports.process = async function processMessage(msg) {
   const responseUrl = getResponseUrl(msg);
   const contentType = getContentType(msg);
 
-  this.logger.debug(`Replying to ${replyTo}`);
-  this.logger.debug(`Response content type is ${contentType}`);
+  console.log(`Replying to ${replyTo}`);
+  console.log(`Response content type is ${contentType}`);
 
   const result = await new AttachmentProcessor().getAttachment(
     responseUrl,
     contentType
   );
-  this.logger.debug("result attachment ", result);
+  console.log("result attachment ", result);
   // const reply = messages.newMessageWithBody(responseUrl);
   // reply.headers[HEADER_ROUTING_KEY] = replyTo;
   // reply.headers[HEADER_CONTENT_TYPE] = contentType;
@@ -44,6 +44,7 @@ exports.process = async function processMessage(msg) {
 
   // emitData();
   // onEnd();
+  this.emit("end");
 };
 
 const getResponseUrl = (msg) => {
