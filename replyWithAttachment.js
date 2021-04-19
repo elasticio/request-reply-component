@@ -42,7 +42,7 @@ exports.process = async function processMessage(msg) {
     const img = blobToImage(result.data);
     console.log("img ", img);
 
-    const reply = messages.newMessageWithBody(result.data);
+    const reply = messages.newMessageWithBody(img);
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
     reply.headers[HEADER_CONTENT_TYPE] = contentType;
 
