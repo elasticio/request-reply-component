@@ -27,13 +27,12 @@ exports.process = async function processMessage(msg) {
       contentType
     );
 
-    console.log(
-      "hmm ",
-      result.data instanceof Buffer,
-      Buffer.isBuffer(result.data)
-    );
+    console.log(result.data);
 
-    const reply = messages.newMessageWithBody(result.data);
+    const imgFile = new Blob([result.data]);
+    const imgUrl = URL.createObjectURL(imgFile);
+
+    const reply = messages.newMessageWithBody(imgUrl);
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
     reply.headers[HEADER_CONTENT_TYPE] = contentType;
 
