@@ -12,20 +12,35 @@ exports.process = async function processMessage(msg) {
   const replyTo = msg.headers.reply_to;
   console.log(`Received new message, replyTo: ${replyTo}`);
   console.log("Received new message: %j", msg);
-  // if (!replyTo) return;
+  if (!replyTo) return;
 
   const responseUrl = getResponseUrl(msg);
   const contentType = msg.body.contentType; // change to func
 
   console.log(`Replying to ${replyTo}`);
-  console.log(`Response content type is ${contentType}`);
-  console.log(`Response url is ${responseUrl}`);
+  console.log(`contentType is ${contentType}`);
+  console.log(`responseUrl is ${responseUrl}`);
 
   try {
     const result = await new AttachmentProcessor().getAttachment(
       responseUrl,
       contentType
     );
+
+    const blobToImage = (blob) => {
+      return new Promise((resolve) => {
+        const url = URL.createObjectURL(blob);
+        console.log("url", url);
+        let img = new Image();
+        img.onload = () => {
+          URL.revokeObjectURL(url);
+          resolve(img);
+        };
+        img.src = url;
+      });
+    };
+    const img = blobToImage(result.data);
+    console.log("img ", img);
 
     const reply = messages.newMessageWithBody(result.data);
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
