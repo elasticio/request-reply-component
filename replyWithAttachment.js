@@ -7,7 +7,7 @@ const HEADER_CONTENT_TYPE = "Content-Type";
 const HEADER_ROUTING_KEY = "X-EIO-Routing-Key";
 const DEFAULT_CONTENT_TYPE = "application/json";
 const HEADER_STATUS_CODE = "x-eio-status-code";
-console.log(new Blob());
+
 exports.process = async function processMessage(msg) {
   const replyTo = msg.headers.reply_to;
   console.log(`Received new message, replyTo: ${replyTo}`);
