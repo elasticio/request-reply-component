@@ -2,7 +2,6 @@ const {
   AttachmentProcessor,
 } = require("@elastic.io/component-commons-library");
 const { messages } = require("elasticio-node");
-const bufferToDataUrl = require("buffer-to-data-url");
 
 const HEADER_CONTENT_TYPE = "Content-Type";
 const HEADER_ROUTING_KEY = "X-EIO-Routing-Key";
