@@ -8,6 +8,16 @@ const HEADER_ROUTING_KEY = "X-EIO-Routing-Key";
 const DEFAULT_CONTENT_TYPE = "application/json";
 const HEADER_STATUS_CODE = "x-eio-status-code";
 
+const Readable = require("stream").Readable;
+
+function bufferToStream(buffer) {
+  var stream = new Readable();
+  stream.push(buffer);
+  stream.push(null);
+
+  return stream;
+}
+
 exports.process = async function processMessage(msg) {
   const replyTo = msg.headers.reply_to;
   console.log(`Received new message, replyTo: ${replyTo}`);
@@ -29,13 +39,22 @@ exports.process = async function processMessage(msg) {
 
     console.log("data ", result.data);
 
-    const buffer = Buffer.from(result.data, "utf-8");
+    const stream = bufferToStream(result.data);
 
-    console.log("buffer ", buffer);
+    console.log("stream ", stream);
 
-    const reply = messages.newMessageWithBody(buffer);
+    const reply = messages.newMessageWithBody(stream);
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
     reply.headers[HEADER_CONTENT_TYPE] = contentType;
+
+    if (msg.body.customHeaders) {
+      this.logger.debug("Applying custom headers: %j", msg.body.customHeaders);
+      Object.assign(reply.headers, msg.body.customHeaders);
+    }
+
+    if (msg.body.statusCode) {
+      reply.headers[HEADER_STATUS_CODE] = msg.body.statusCode;
+    }
 
     this.logger.debug("Replying with %j", reply);
     this.emit("data", reply);
@@ -46,15 +65,6 @@ exports.process = async function processMessage(msg) {
   } catch (err) {
     console.log(88, err);
   }
-
-  // if (msg.body.customHeaders) {
-  //   this.logger.debug("Applying custom headers: %j", msg.body.customHeaders);
-  //   Object.assign(reply.headers, msg.body.customHeaders);
-  // }
-
-  // if (msg.body.statusCode) {
-  //   reply.headers[HEADER_STATUS_CODE] = msg.body.statusCode;
-  // }
 };
 
 const getResponseUrl = (msg) => {
