@@ -19,27 +19,20 @@ exports.process = async function processMessage(msg) {
 
   console.log(`Replying to ${replyTo}`);
   console.log(`Response content type is ${contentType}`);
-
+  let body;
   const result = await new AttachmentProcessor().getAttachment(
     msg.attachments["img.png"].url,
     contentType
   );
   console.log("result attachment ", typeof result.data, result.headers);
 
-  handler(result);
-  async function handler(response) {
-    let body = "";
-    try {
-      for await (const chunk of response) {
-        let text = chunk.toString();
-        console.log(text);
-        body += text;
-      }
-    } catch (err) {
-      console.log(err);
-    }
-    console.log(body.length);
-  }
+  result.on("data", function (chunk) {
+    body += chunk;
+  });
+  result.on("end", function () {
+    // all data has been downloaded
+  });
+  console.log(body);
   // const reply = messages.newMessageWithBody(responseUrl);
   // reply.headers[HEADER_ROUTING_KEY] = replyTo;
   // reply.headers[HEADER_CONTENT_TYPE] = contentType;
