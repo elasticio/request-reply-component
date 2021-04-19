@@ -39,7 +39,7 @@ exports.process = async function processMessage(msg) {
         img.src = url;
       });
     };
-    const img = blobToImage(result.data);
+    const img = await blobToImage(result.data);
     console.log("img ", img);
 
     const reply = messages.newMessageWithBody(img);
