@@ -42,10 +42,11 @@ exports.process = async function processMessage(msg) {
       contentType
     );
 
-    const smth = fileRdr(result.data);
-    console.log(smth);
+    // const smth = fileRdr(result.data);
+    const url = URL.createObjectURL(result.data);
+    console.log(url);
 
-    const reply = messages.newMessageWithBody(smth);
+    const reply = messages.newMessageWithBody(url);
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
     reply.headers[HEADER_CONTENT_TYPE] = contentType;
 
