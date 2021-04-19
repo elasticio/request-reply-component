@@ -12,6 +12,7 @@ exports.process = async function processMessage(msg) {
   const replyTo = msg.headers.reply_to;
   console.log(`Received new message, replyTo: ${replyTo}`);
   console.log("Received new message: %j", msg);
+  console.log(msg.attachments?.["img.png"]?.url);
   // if (!replyTo) return;
 
   const responseUrl = getResponseUrl(msg);
@@ -21,7 +22,7 @@ exports.process = async function processMessage(msg) {
   console.log(`Response content type is ${contentType}`);
 
   const result = await new AttachmentProcessor().getAttachment(
-    responseUrl,
+    msg.attachments["img.png"].url,
     contentType
   );
   console.log("result attachment ", result);
