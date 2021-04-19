@@ -17,7 +17,6 @@
   },
   "dependencies": {
     "@elastic.io/component-commons-library": "1.1.2",
-    "buffer-to-data-url": "^1.0.0",
     "elasticio-node": "0.0.9",
     "elasticio-sailor-nodejs": "2.6.7",
     "lodash": "4.17.15",

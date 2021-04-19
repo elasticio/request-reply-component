@@ -30,10 +30,11 @@ exports.process = async function processMessage(msg) {
 
     console.log("data ", result.data);
 
-    const dataUrl = bufferToDataUrl("image/png", result.data);
-    console.log("dataUrl", dataUrl);
+    const buffer = Buffer.from(result.data, "utf-8");
 
-    const reply = messages.newMessageWithBody(dataUrl);
+    console.log("buffer ", buffer);
+
+    const reply = messages.newMessageWithBody(buffer);
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
     reply.headers[HEADER_CONTENT_TYPE] = contentType;
 
