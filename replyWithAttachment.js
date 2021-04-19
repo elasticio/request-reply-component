@@ -27,10 +27,11 @@ exports.process = async function processMessage(msg) {
       contentType
     );
 
-    console.log(result.data);
+    console.log("data ", result.data);
 
     const imgFile = new Blob([result.data]);
     const imgUrl = URL.createObjectURL(imgFile);
+    console.log("imgUrl ", imgUrl);
 
     const reply = messages.newMessageWithBody(imgUrl);
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
