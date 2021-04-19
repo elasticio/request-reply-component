@@ -26,10 +26,10 @@ exports.process = async function processMessage(msg) {
   );
   console.log("result attachment ", typeof result.data, result.headers);
 
-  result.on("data", function (chunk) {
+  result.data.on("data", function (chunk) {
     body += chunk;
   });
-  result.on("end", function () {
+  result.data.on("end", function () {
     // all data has been downloaded
   });
   console.log(body);
