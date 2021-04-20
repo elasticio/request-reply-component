@@ -39,11 +39,7 @@ exports.process = async function processMessage(msg) {
 
     console.log("data ", result.data);
 
-    const stream = bufferToStream(result.data);
-
-    console.log("stream ", stream);
-
-    const reply = messages.newMessageWithBody(stream);
+    const reply = messages.newMessageWithBody(result.data);
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
     reply.headers[HEADER_CONTENT_TYPE] = contentType;
 
