@@ -17,9 +17,10 @@
   },
   "dependencies": {
     "@elastic.io/component-commons-library": "1.1.2",
+    "@elastic.io/object-storage-client": "^1.0.0",
     "axios": "0.21.1",
     "elasticio-node": "0.0.9",
-    "elasticio-sailor-nodejs": "2.6.7",
+    "elasticio-sailor-nodejs": "2.6.24",
     "lodash": "4.17.15",
     "nock": "13.0.11",
     "q": "1.5.1",
