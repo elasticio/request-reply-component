@@ -3,8 +3,6 @@ const {
 } = require("@elastic.io/component-commons-library");
 const { default: axios } = require("axios");
 const { messages } = require("elasticio-node");
-const { Readable } = require("stream");
-// const { v1 } = require("uuid");
 
 const JWTToken = process.env.ELASTICIO_OBJECT_STORAGE_TOKEN;
 const maesterUri = process.env.ELASTICIO_OBJECT_STORAGE_URI;
@@ -17,8 +15,6 @@ const HEADER_OBJECT_STORAGE = "x-ipaas-object-storage-id";
 
 exports.process = async function processMessage(msg) {
   try {
-    console.log(this.emit);
-    this.logger.debug("im in");
     const replyTo = msg.headers.reply_to;
     const { responseUrl } = msg.body;
     console.log(`Received new message, replyTo: ${replyTo}`);
@@ -35,11 +31,8 @@ exports.process = async function processMessage(msg) {
       responseUrl,
       "stream"
     );
+    console.log(result.data);
 
-    // console.log("res data: ", typeof result.data);
-
-    // const stream = formStream(result.data);
-    // console.log("stream: ", typeof stream, stream instanceof Readable);
     const { objectId } = await sendStreamToStorage(
       result.data,
       maesterUri,
@@ -68,13 +61,6 @@ exports.process = async function processMessage(msg) {
     console.log(err);
     this.emit("error", err);
   }
-};
-
-const formStream = (data) => {
-  const stream = new Readable();
-  stream.push(data);
-  stream.push(null);
-  return stream;
 };
 
 const sendStreamToStorage = async (stream, maesterUri, JWTToken) => {
