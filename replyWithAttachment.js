@@ -1,37 +1,33 @@
 const {
   AttachmentProcessor,
 } = require("@elastic.io/component-commons-library");
+const { default: axios } = require("axios");
 const { messages } = require("elasticio-node");
+// const { v1 } = require("uuid");
+
+const JWTToken = process.env.ELASTICIO_OBJECT_STORAGE_TOKEN;
+const maesterUri = process.env.ELASTICIO_OBJECT_STORAGE_URI;
 
 const HEADER_CONTENT_TYPE = "Content-Type";
 const HEADER_ROUTING_KEY = "X-EIO-Routing-Key";
 const DEFAULT_CONTENT_TYPE = "application/json";
 const HEADER_STATUS_CODE = "x-eio-status-code";
-
-const Readable = require("stream").Readable;
-
-function bufferToStream(buffer) {
-  var stream = new Readable();
-  stream.push(buffer);
-  stream.push(null);
-
-  return stream;
-}
+const HEADER_OBJECT_STORAGE = "x-ipaas-object-storage-id";
 
 exports.process = async function processMessage(msg) {
-  const replyTo = msg.headers.reply_to;
-  console.log(`Received new message, replyTo: ${replyTo}`);
-  console.log("Received new message: %j", msg);
-  if (!replyTo) return;
-
-  const responseUrl = getResponseUrl(msg);
-  const contentType = msg.body.contentType; // change to func
-
-  console.log(`Replying to ${replyTo}`);
-  console.log(`contentType is ${contentType}`);
-  console.log(`responseUrl is ${responseUrl}`);
-
   try {
+    const replyTo = msg.headers.reply_to;
+    const { responseUrl } = msg.body;
+    console.log(`Received new message, replyTo: ${replyTo}`);
+    console.log("Received new message: %j", msg);
+    console.log(`responseUrl is ${responseUrl}`);
+    if (!replyTo || !responseUrl) return;
+
+    const contentType = msg.body.contentType; // change to func
+
+    console.log(`Replying to ${replyTo}`);
+    console.log(`contentType is ${contentType}`);
+
     const result = await new AttachmentProcessor().getAttachment(
       responseUrl,
       contentType
@@ -39,9 +35,13 @@ exports.process = async function processMessage(msg) {
 
     console.log("data ", result.data);
 
-    const reply = messages.newMessageWithBody(result.data);
+    const stream = formStream(result.data);
+    const res = await sendStreamToStorage(stream(), maesterUri, JWTToken);
+
+    const reply = messages.newMessageWithBody();
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
     reply.headers[HEADER_CONTENT_TYPE] = contentType;
+    reply.headers[HEADER_OBJECT_STORAGE] = res.objectId;
 
     if (msg.body.customHeaders) {
       this.logger.debug("Applying custom headers: %j", msg.body.customHeaders);
@@ -52,20 +52,37 @@ exports.process = async function processMessage(msg) {
       reply.headers[HEADER_STATUS_CODE] = msg.body.statusCode;
     }
 
-    this.logger.debug("Replying with %j", reply);
-    this.emit("data", reply);
+    console.log("Replying with %j", reply);
 
-    // emitData();
-    // onEnd();
+    this.emit("data", reply);
     this.emit("end");
   } catch (err) {
-    console.log(88, err);
+    console.log(err);
+    this.emit("error", err);
   }
+};
+
+const formStream = (data) => {
+  const stream = new Readable();
+  stream.push(data);
+  stream.push(null);
+  return stream;
+};
+
+const sendStreamToStorage = async (stream, maesterUri, JWTToken) => {
+  console.log(`sending query to ${maesterUri} with token: ${JWTToken}`);
+
+  const res = await axios.post(`${maesterUri}/objects`, stream(), {
+    headers: { Authorization: `Bearer ${JWTToken}` },
+  });
+
+  console.log("response: ", res.data);
+  return res.data;
 };
 
 const getResponseUrl = (msg) => {
   if (!msg.body.responseUrl) {
-    this.logger.debug(
+    console.log(
       "Field responseUrl on the message body was empty, we will reply with the whole message body"
     );
   }
@@ -84,16 +101,4 @@ const getContentType = (msg) => {
   }
 
   return DEFAULT_CONTENT_TYPE;
-};
-
-const emitData = () => {
-  this.logger.info("Emitting data...");
-
-  delete msg.body.elasticio; // eslint-disable-line
-  this.emit("data", messages.newMessageWithBody(msg.body));
-};
-
-const onEnd = () => {
-  this.logger.debug(`Finished processing message for replyTo: ${replyTo}`);
-  this.emit("end");
 };
