@@ -31,15 +31,15 @@ exports.process = async function processMessage(msg) {
 
     const result = await new AttachmentProcessor().getAttachment(
       responseUrl,
-      contentType
+      "stream"
     );
 
     // console.log("res data: ", typeof result.data);
 
-    const stream = formStream(result.data);
+    // const stream = formStream(result.data);
     // console.log("stream: ", typeof stream, stream instanceof Readable);
     const { objectId } = await sendStreamToStorage(
-      stream,
+      result.data,
       maesterUri,
       JWTToken
     );
