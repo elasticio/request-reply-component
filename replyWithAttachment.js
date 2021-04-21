@@ -34,12 +34,12 @@ exports.process = async function processMessage(msg) {
       contentType
     );
 
-    console.log("res data: ", typeof result.data, result.data);
+    // console.log("res data: ", typeof result.data);
 
-    const stream = formStream(result.data);
-    console.log("stream: ", typeof stream, stream instanceof Readable);
+    // const stream = formStream(result.data);
+    // console.log("stream: ", typeof stream, stream instanceof Readable);
     const { objectId } = await sendStreamToStorage(
-      stream,
+      result.data,
       maesterUri,
       JWTToken
     );
