@@ -47,7 +47,10 @@ exports.process = async function processMessage(msg) {
       "stream"
     );
 
-    const objectId = await objectStorage.addAsStream(() => result.data);
+    const objectId = await objectStorage.addAsStream(
+      () => result.data,
+      JWTToken
+    );
 
     // const { objectId } = await sendStreamToStorage(
     //   result.data,
