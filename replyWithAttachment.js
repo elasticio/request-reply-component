@@ -3,6 +3,7 @@ const {
 } = require("@elastic.io/component-commons-library");
 const { default: axios } = require("axios");
 const { messages } = require("elasticio-node");
+const { Readable } = require("stream");
 // const { v1 } = require("uuid");
 
 const JWTToken = process.env.ELASTICIO_OBJECT_STORAGE_TOKEN;
@@ -36,7 +37,7 @@ exports.process = async function processMessage(msg) {
     console.log("data ", result.data);
 
     const stream = formStream(result.data);
-    const res = await sendStreamToStorage(stream(), maesterUri, JWTToken);
+    const res = await sendStreamToStorage(stream, maesterUri, JWTToken);
 
     const reply = messages.newMessageWithBody();
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
@@ -72,7 +73,7 @@ const formStream = (data) => {
 const sendStreamToStorage = async (stream, maesterUri, JWTToken) => {
   console.log(`sending query to ${maesterUri} with token: ${JWTToken}`);
 
-  const res = await axios.post(`${maesterUri}/objects`, stream(), {
+  const res = await axios.post(`${maesterUri}/objects`, stream, {
     headers: { Authorization: `Bearer ${JWTToken}` },
   });
 

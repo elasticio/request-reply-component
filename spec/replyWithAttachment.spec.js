@@ -5,7 +5,7 @@ const { messages } = require("elasticio-node");
 const logger = require("@elastic.io/component-logger")();
 const replyWithAttachment = require("../replyWithAttachment");
 
-describe("Reply with attachment", () => {
+xdescribe("Reply with attachment", () => {
   const msg = messages.newMessageWithBody({
     contentType: "image/png",
     responseUrl: "http://fake_api",
