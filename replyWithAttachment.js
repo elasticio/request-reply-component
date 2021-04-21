@@ -34,7 +34,10 @@ exports.process = async function processMessage(msg) {
       contentType
     );
 
+    console.log("res data: ", typeof result.data, result.data);
+
     const stream = formStream(result.data);
+    console.log("stream: ", typeof stream, stream instanceof Readable);
     const { objectId } = await sendStreamToStorage(
       stream,
       maesterUri,
