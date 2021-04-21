@@ -4,7 +4,6 @@ const {
 const { default: axios } = require("axios");
 const { messages } = require("elasticio-node");
 const { Readable } = require("stream");
-const toStream = require("blob-to-stream");
 // const { v1 } = require("uuid");
 
 const JWTToken = process.env.ELASTICIO_OBJECT_STORAGE_TOKEN;
@@ -32,15 +31,15 @@ exports.process = async function processMessage(msg) {
 
     const result = await new AttachmentProcessor().getAttachment(
       responseUrl,
-      "blob"
+      contentType
     );
 
     // console.log("res data: ", typeof result.data);
 
-    // const stream = formStream(result.data);
+    const stream = formStream(result.data);
     // console.log("stream: ", typeof stream, stream instanceof Readable);
     const { objectId } = await sendStreamToStorage(
-      toStream(result.data),
+      stream,
       maesterUri,
       JWTToken
     );
