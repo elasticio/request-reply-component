@@ -38,8 +38,6 @@ exports.process = async function processMessage(msg) {
     if (!replyTo || !responseUrl) return;
 
     const contentType = msg.body.contentType; // change to func
-
-    this.logger.debug(`Replying to ${replyTo}`);
     this.logger.debug(`contentType is ${contentType}`);
 
     const attachmentAsStream = await new AttachmentProcessor().getAttachment(
