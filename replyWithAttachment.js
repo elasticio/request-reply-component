@@ -4,6 +4,7 @@ const {
 const { messages } = require("elasticio-node");
 const Encryptor = require("elasticio-sailor-nodejs/lib/encryptor");
 const { ObjectStorage } = require("@elastic.io/object-storage-client");
+const allowedContentTypes = ["application/pdf", "image/png"];
 
 const JWTToken = process.env.ELASTICIO_OBJECT_STORAGE_TOKEN;
 const maesterUri = process.env.ELASTICIO_OBJECT_STORAGE_URI;
@@ -37,18 +38,15 @@ exports.process = async function processMessage(msg) {
     this.logger.debug("Received new message: %j", msg);
     if (!replyTo || !responseUrl) return;
 
-    const contentType = msg.body.contentType; // change to func
+    const contentType = getContentType(msg);
     this.logger.debug(`contentType is ${contentType}`);
 
-    const attachmentAsStream = await new AttachmentProcessor().getAttachment(
+    const { data } = await new AttachmentProcessor().getAttachment(
       responseUrl,
       "stream"
     );
 
-    const objectId = await objectStorage.addAsStream(
-      () => attachmentAsStream.data,
-      JWTToken
-    );
+    const objectId = await objectStorage.addAsStream(() => data, JWTToken);
 
     const reply = messages.newMessageWithBody({});
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
@@ -75,10 +73,10 @@ exports.process = async function processMessage(msg) {
 };
 
 const getContentType = (msg) => {
-  const contentType = msg.body.contentType;
+  const { contentType } = msg.body;
 
   if (contentType) {
-    if (/^application|text\//.test(contentType)) {
+    if (allowedContentTypes.includes(contentType)) {
       return contentType;
     }
 
