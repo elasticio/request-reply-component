@@ -34,16 +34,17 @@ exports.process = async function processMessage(msg) {
       contentType
     );
 
-    // console.log("data ", result.data);
-
     const stream = formStream(result.data);
-    const res = await sendStreamToStorage(stream, maesterUri, JWTToken);
+    const { objectId } = await sendStreamToStorage(
+      stream,
+      maesterUri,
+      JWTToken
+    );
 
     const reply = messages.newMessageWithBody({});
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
-    reply.headers[HEADER_CONTENT_TYPE] = contentType;
-    reply.headers[HEADER_OBJECT_STORAGE] = res.objectId;
-    console.log("obj id ", res.objectId);
+    reply.headers[HEADER_CONTENT_TYPE] = "image/png";
+    reply.headers[HEADER_OBJECT_STORAGE] = objectId;
 
     if (msg.body.customHeaders) {
       this.logger.debug("Applying custom headers: %j", msg.body.customHeaders);
