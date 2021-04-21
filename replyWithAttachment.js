@@ -41,7 +41,7 @@ exports.process = async function processMessage(msg) {
 
     const reply = messages.newMessageWithBody({});
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
-    reply.headers[HEADER_CONTENT_TYPE] = "image/png";
+    reply.headers[HEADER_CONTENT_TYPE] = "application/pdf";
     reply.headers[HEADER_OBJECT_STORAGE] = objectId;
 
     if (msg.body.customHeaders) {
