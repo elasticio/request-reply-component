@@ -17,6 +17,8 @@ const HEADER_OBJECT_STORAGE = "x-ipaas-object-storage-id";
 
 exports.process = async function processMessage(msg) {
   try {
+    console.log(this.emit);
+    this.logger.debug("im in");
     const replyTo = msg.headers.reply_to;
     const { responseUrl } = msg.body;
     console.log(`Received new message, replyTo: ${replyTo}`);
