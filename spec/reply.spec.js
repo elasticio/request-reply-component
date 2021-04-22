@@ -1,8 +1,10 @@
+'use strict';
+
 const sinon = require('sinon');
 require('chai').should();
-const { messages } = require('elasticio-node');
-const logger = require('@elastic.io/component-logger')();
 const reply = require('../reply.js');
+const {messages} = require('elasticio-node');
+const logger = require('@elastic.io/component-logger')();
 
 describe('Reply', () => {
     process.env.ELASTICIO_EXEC_ID = 'my_exec_123';
@@ -14,7 +16,7 @@ describe('Reply', () => {
             logger,
         };
 
-        const msg = messages.newMessageWithBody({
+        let msg = messages.newMessageWithBody({
             contentType: 'application/json',
             responseBody: {
                 greeting: 'Hello, world!'
@@ -31,7 +33,7 @@ describe('Reply', () => {
 
         before((done) => {
             reply.process.bind(self)(msg);
-            setTimeout(done, 50);
+            setTimeout(done, 50)
         });
 
         it('should emit reply and original message', () => {
@@ -74,15 +76,16 @@ describe('Reply', () => {
             logger
         };
 
-        const msg = {
-            headers: {
-                reply_to: 'my_routing_key_123'
+        let msg = {
+            headers : {
+               reply_to: 'my_routing_key_123'
             }
         };
 
         before((done) => {
+
             reply.process.bind(self)(msg);
-            setTimeout(done, 50);
+            setTimeout(done, 50)
         });
 
         it('should emit error', () => {
@@ -108,7 +111,7 @@ describe('Reply', () => {
             logger
         };
 
-        const msg = messages.newMessageWithBody({
+        let msg = messages.newMessageWithBody({
             contentType: 'application/json',
             responseBody: {
                 greeting: 'Hello, world!'
@@ -121,7 +124,7 @@ describe('Reply', () => {
 
         before((done) => {
             reply.process.bind(self)(msg);
-            setTimeout(done, 50);
+            setTimeout(done, 50)
         });
 
         it('should emit only original message', () => {
@@ -152,8 +155,8 @@ describe('Reply', () => {
             logger
         };
 
-        const msg = {
-            headers: {
+        let msg = {
+            headers : {
                 reply_to: 'my_routing_key_123'
             },
             body: {
@@ -163,7 +166,7 @@ describe('Reply', () => {
 
         before((done) => {
             reply.process.bind(self)(msg);
-            setTimeout(done, 50);
+            setTimeout(done, 50)
         });
 
         it('should have send two data and one end', () => {
@@ -184,6 +187,7 @@ describe('Reply', () => {
             spy.getCall(0).args[1].body.should.be.deep.equal({
                 foo: 'bar'
             });
+
         });
 
         it('should emit data for original message', () => {
@@ -206,13 +210,13 @@ describe('Reply', () => {
             logger
         };
 
-        const msg = messages.newMessageWithBody({
+        let msg = messages.newMessageWithBody({
             contentType: 'audio/mp4'
         });
 
         before((done) => {
             reply.process.bind(self)(msg);
-            setTimeout(done, 50);
+            setTimeout(done, 50)
         });
 
         it('should emit error', () => {
@@ -232,4 +236,5 @@ describe('Reply', () => {
             spy.getCall(1).args[0].should.be.equal('end');
         });
     });
+
 });

@@ -9,12 +9,11 @@ const HEADER_STATUS_CODE = 'x-eio-status-code';
 exports.process = function (msg) {
     const replyTo = msg.headers.reply_to;
 
-    this.logger.info(`Received new message, replyTo: ${replyTo}`);
-    this.logger.debug('Received new message: %j', msg);
+    this.logger.info('Received new message');
 
     let contentType;
     let responseBody;
-    const self = this; //eslint-disable-line
+    const self = this;
 
     Q()
         .then(init)
@@ -26,7 +25,7 @@ exports.process = function (msg) {
     function init() {
         contentType = getContentType();
         if (!msg.body.responseBody) {
-            self.logger.debug('Field responseBody on the message body was empty, we will reply with the whole message body'); // eslint-disable-line
+            self.logger.debug('Field responseBody on the message body was empty, we will reply with the whole message body');
         }
         responseBody = msg.body.responseBody ? msg.body.responseBody : msg.body;
     }
@@ -37,7 +36,7 @@ exports.process = function (msg) {
             return;
         }
 
-        self.logger.debug(`Replying to ${replyTo}`);
+        self.logger.info('About to reply');
         self.logger.debug(`Response content type is ${contentType}`);
 
         const reply = messages.newMessageWithBody(responseBody);
@@ -45,7 +44,7 @@ exports.process = function (msg) {
         reply.headers[HEADER_CONTENT_TYPE] = contentType;
 
         if (msg.body.customHeaders) {
-            self.logger.debug('Applying custom headers: %j', msg.body.customHeaders);
+            self.logger.debug('Applying custom headers...');
             Object.assign(reply.headers, msg.body.customHeaders);
         }
 
@@ -53,12 +52,12 @@ exports.process = function (msg) {
             reply.headers[HEADER_STATUS_CODE] = msg.body.statusCode;
         }
 
-        self.logger.debug('Replying with %j', reply);
-        self.emit('data', reply);
+        self.logger.debug('Sending reply');
+        return self.emit('data', reply);
     }
 
     function getContentType() {
-        const contentType = msg.body.contentType; //eslint-disable-line
+        const contentType = msg.body.contentType;
 
         if (contentType) {
             if (/^application|text\//.test(contentType)) {
@@ -74,17 +73,18 @@ exports.process = function (msg) {
     function emitData() {
         self.logger.info('Emitting data...');
 
-        delete msg.body.elasticio; // eslint-disable-line
-        self.emit('data', messages.newMessageWithBody(msg.body));
+        delete msg.body.elasticio;
+
+        return self.emit('data', messages.newMessageWithBody(msg.body));
     }
 
     function onError(e) {
-        self.logger.error(e.toString());
-        self.emit('error', e);
+        self.logger.error('Error occurred');
+        return self.emit('error', e);
     }
 
     function onEnd() {
-        self.logger.debug(`Finished processing message for replyTo: ${replyTo}`);
-        self.emit('end');
+        self.logger.debug('Finished processing message');
+        return self.emit('end');
     }
 };
