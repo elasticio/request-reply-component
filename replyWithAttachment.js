@@ -17,12 +17,6 @@ const DEFAULT_CONTENT_TYPE = "application/json";
 const HEADER_STATUS_CODE = "x-eio-status-code";
 const HEADER_OBJECT_STORAGE = "x-ipaas-object-storage-id";
 
-const allowedContentTypes = [
-  DEFAULT_CONTENT_TYPE,
-  "application/pdf",
-  "image/png",
-];
-
 const objectStorage = new ObjectStorage({
   uri: maesterUri,
   jwtSecret: JWTToken,
@@ -44,7 +38,7 @@ exports.process = async function processMessage(msg) {
     this.logger.debug("Received new message: %j", msg);
     if (!replyTo || !responseUrl) return;
 
-    const contentType = getContentType(msg);
+    const { contentType = DEFAULT_CONTENT_TYPE } = msg.body;
     this.logger.debug(`contentType is ${contentType}`);
 
     const { data } = await new AttachmentProcessor().getAttachment(
@@ -76,19 +70,4 @@ exports.process = async function processMessage(msg) {
     this.logger.error(err.toString());
     this.emit("error", err);
   }
-};
-exports.allowedContentTypes = allowedContentTypes;
-
-const getContentType = (msg) => {
-  const { contentType } = msg.body;
-
-  if (contentType) {
-    if (allowedContentTypes.includes(contentType)) {
-      return contentType;
-    }
-
-    throw new Error(`Content-type "${contentType}" is not supported`);
-  }
-
-  return DEFAULT_CONTENT_TYPE;
 };
