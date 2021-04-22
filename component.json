@@ -2,7 +2,7 @@
   "title": "HTTP Reply",
   "service": "request-reply",
   "description": "Used to reply to HTTP webhooks",
-  "buildType":"docker",
+  "buildType": "docker",
   "actions": {
     "reply": {
       "title": "Reply",
@@ -32,25 +32,14 @@
               "maxLength": 1000
             },
             "statusCode": {
-                "title": "Response Status Code",
-                "type": "number",
-                "minimum": 0,
-                "maximum": 599,
-                "required": false
+              "title": "Response Status Code",
+              "type": "number",
+              "minimum": 0,
+              "maximum": 599,
+              "required": false
             }
           }
         },
-        "out": {}
-      }
-    },
-    "reply_lightweight": {
-      "help": {
-          "description": "Send reply to webhook using response body from external storage."
-      },
-      "title": "Reply-Lightweight",
-      "main": "./reply-lightweight.js",
-      "metadata": {
-        "in": {},
         "out": {}
       }
     },
