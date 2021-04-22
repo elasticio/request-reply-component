@@ -6,85 +6,85 @@ const HEADER_ROUTING_KEY = 'X-EIO-Routing-Key';
 const DEFAULT_CONTENT_TYPE = 'application/json';
 const HEADER_STATUS_CODE = 'x-eio-status-code';
 
+// eslint-disable-next-line
 exports.process = function (msg) {
-    const replyTo = msg.headers.reply_to;
+  const replyTo = msg.headers.reply_to;
 
-    this.logger.info('Received new message');
+  this.logger.info(`Received new message, replyTo: ${replyTo}`);
+  this.logger.debug('Received new message: %j', msg);
 
-    let contentType;
-    let responseBody;
-    const self = this;
+  let contentType;
+  let responseBody;
+  const self = this; //eslint-disable-line
 
-    Q()
-        .then(init)
-        .then(emitReply)
-        .then(emitData)
-        .catch(onError)
-        .finally(onEnd);
+  Q().then(init).then(emitReply).then(emitData)
+    .catch(onError)
+    .finally(onEnd);
 
-    function init() {
-        contentType = getContentType();
-        if (!msg.body.responseBody) {
-            self.logger.debug('Field responseBody on the message body was empty, we will reply with the whole message body');
-        }
-        responseBody = msg.body.responseBody ? msg.body.responseBody : msg.body;
+  function init() {
+    contentType = getContentType();
+    if (!msg.body.responseBody) {
+      self.logger.debug(
+        'Field responseBody on the message body was empty, we will reply with the whole message body'
+      ); // eslint-disable-line
+    }
+    responseBody = msg.body.responseBody ? msg.body.responseBody : msg.body;
+  }
+
+  function emitReply() {
+    // Don't emit this message when running sample data
+    if (!replyTo) {
+      return;
     }
 
-    function emitReply() {
-        // Don't emit this message when running sample data
-        if (!replyTo) {
-            return;
-        }
+    self.logger.debug(`Replying to ${replyTo}`);
+    self.logger.debug(`Response content type is ${contentType}`);
 
-        self.logger.info('About to reply');
-        self.logger.debug(`Response content type is ${contentType}`);
+    const reply = messages.newMessageWithBody(responseBody);
+    reply.headers[HEADER_ROUTING_KEY] = replyTo;
+    reply.headers[HEADER_CONTENT_TYPE] = contentType;
 
-        const reply = messages.newMessageWithBody(responseBody);
-        reply.headers[HEADER_ROUTING_KEY] = replyTo;
-        reply.headers[HEADER_CONTENT_TYPE] = contentType;
-
-        if (msg.body.customHeaders) {
-            self.logger.debug('Applying custom headers...');
-            Object.assign(reply.headers, msg.body.customHeaders);
-        }
-
-        if (msg.body.statusCode) {
-            reply.headers[HEADER_STATUS_CODE] = msg.body.statusCode;
-        }
-
-        self.logger.debug('Sending reply');
-        return self.emit('data', reply);
+    if (msg.body.customHeaders) {
+      self.logger.debug('Applying custom headers: %j', msg.body.customHeaders);
+      Object.assign(reply.headers, msg.body.customHeaders);
     }
 
-    function getContentType() {
-        const contentType = msg.body.contentType;
-
-        if (contentType) {
-            if (/^application|text\//.test(contentType)) {
-                return contentType;
-            }
-
-            throw new Error(`Content-type ${contentType} is not supported`);
-        }
-
-        return DEFAULT_CONTENT_TYPE;
+    if (msg.body.statusCode) {
+      reply.headers[HEADER_STATUS_CODE] = msg.body.statusCode;
     }
 
-    function emitData() {
-        self.logger.info('Emitting data...');
+    self.logger.debug('Replying with %j', reply);
+    self.emit('data', reply);
+  }
 
-        delete msg.body.elasticio;
+  function getContentType() {
+    const contentType = msg.body.contentType; //eslint-disable-line
 
-        return self.emit('data', messages.newMessageWithBody(msg.body));
+    if (contentType) {
+      if (/^application|text\//.test(contentType)) {
+        return contentType;
+      }
+
+      throw new Error(`Content-type ${contentType} is not supported`);
     }
 
-    function onError(e) {
-        self.logger.error('Error occurred');
-        return self.emit('error', e);
-    }
+    return DEFAULT_CONTENT_TYPE;
+  }
 
-    function onEnd() {
-        self.logger.debug('Finished processing message');
-        return self.emit('end');
-    }
+  function emitData() {
+    self.logger.info('Emitting data...');
+
+    delete msg.body.elasticio; // eslint-disable-line
+    self.emit('data', messages.newMessageWithBody(msg.body));
+  }
+
+  function onError(e) {
+    self.logger.error(e.toString());
+    self.emit('error', e);
+  }
+
+  function onEnd() {
+    self.logger.debug(`Finished processing message for replyTo: ${replyTo}`);
+    self.emit('end');
+  }
 };

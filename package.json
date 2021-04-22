@@ -11,7 +11,9 @@
   },
   "author": "elastic.io GmbH",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha --recursive spec"
+    "test": "./node_modules/mocha/bin/mocha --recursive spec",
+    "lint": "eslint ./*.js spec/*.js",
+    "pretest": "npm run lint"
   },
   "dependencies": {
     "@elastic.io/component-commons-library": "1.1.2",
