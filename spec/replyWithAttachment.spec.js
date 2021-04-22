@@ -68,7 +68,7 @@ describe("Reply with attachment", () => {
           ...msg.body.customHeaders,
         });
 
-        expect(spy.getCall(0).args[1].body).to.be.deep.equal({});
+        expect(spy.getCall(0).args[1].body).to.be.deep.equal(msg.body);
       });
 
       describe("contentType-s validation", () => {
@@ -108,7 +108,10 @@ describe("Reply with attachment", () => {
               ...msg.body.customHeaders,
             });
 
-            expect(spy.getCall(0).args[1].body).to.be.deep.equal({});
+            expect(spy.getCall(0).args[1].body).to.be.deep.equal({
+              ...msg.body,
+              contentType,
+            });
           });
         });
       });
