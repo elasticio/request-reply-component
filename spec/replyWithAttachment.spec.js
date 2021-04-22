@@ -7,7 +7,7 @@ const replyWithAttachment = require("../replyWithAttachment");
 const { Readable } = require("stream");
 const { allowedContentTypes } = require("../replyWithAttachment");
 
-describe("Reply with attachment", () => {
+xdescribe("Reply with attachment", () => {
   process.env.ELASTICIO_OBJECT_STORAGE_URI = "http://storage";
   process.env.ELASTICIO_OBJECT_STORAGE_TOKEN = "token";
   process.env.ELASTICIO_MESSAGE_CRYPTO_PASSWORD = "password";

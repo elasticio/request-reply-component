@@ -54,7 +54,7 @@ exports.process = async function processMessage(msg) {
 
     const objectId = await objectStorage.addAsStream(() => data, JWTToken);
 
-    const reply = messages.newMessageWithBody(msg.body);
+    const reply = messages.newMessageWithBody({});
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
     reply.headers[HEADER_CONTENT_TYPE] = contentType;
     reply.headers[HEADER_OBJECT_STORAGE] = objectId;
@@ -70,6 +70,7 @@ exports.process = async function processMessage(msg) {
 
     this.logger.debug("Replying with %j", reply);
     this.emit("data", reply);
+    this.emit("data", messages.newMessageWithBody(msg.body));
   } catch (err) {
     console.log(err);
     this.logger.error(err.toString());
