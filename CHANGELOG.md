@@ -1,3 +1,6 @@
+## 1.2.0 (Aipril 22, 2021)
+* Added new action `replyWithAttachment`
+
 ## 1.1.5 (January 28, 2021)
 * Update sailor version to 2.6.24
 * Fix a bug with memory leakage in Sailor
