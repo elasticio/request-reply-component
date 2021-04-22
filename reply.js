@@ -10,8 +10,7 @@ const HEADER_STATUS_CODE = 'x-eio-status-code';
 exports.process = function (msg) {
   const replyTo = msg.headers.reply_to;
 
-  this.logger.info(`Received new message, replyTo: ${replyTo}`);
-  this.logger.debug('Received new message: %j', msg);
+  this.logger.info('Received new message');
 
   let contentType;
   let responseBody;
@@ -37,7 +36,7 @@ exports.process = function (msg) {
       return;
     }
 
-    self.logger.debug(`Replying to ${replyTo}`);
+    self.logger.info('About to reply');
     self.logger.debug(`Response content type is ${contentType}`);
 
     const reply = messages.newMessageWithBody(responseBody);
@@ -45,7 +44,7 @@ exports.process = function (msg) {
     reply.headers[HEADER_CONTENT_TYPE] = contentType;
 
     if (msg.body.customHeaders) {
-      self.logger.debug('Applying custom headers: %j', msg.body.customHeaders);
+      self.logger.debug('Applying custom headers...');
       Object.assign(reply.headers, msg.body.customHeaders);
     }
 
@@ -53,7 +52,7 @@ exports.process = function (msg) {
       reply.headers[HEADER_STATUS_CODE] = msg.body.statusCode;
     }
 
-    self.logger.debug('Replying with %j', reply);
+    self.logger.debug('Sending reply');
     self.emit('data', reply);
   }
 
@@ -84,7 +83,7 @@ exports.process = function (msg) {
   }
 
   function onEnd() {
-    self.logger.debug(`Finished processing message for replyTo: ${replyTo}`);
+    self.logger.debug('Finished processing message');
     self.emit('end');
   }
 };

@@ -30,14 +30,12 @@ exports.process = async function processMessage(msg) {
   try {
     const replyTo = msg.headers.reply_to;
     const { responseUrl } = msg.body;
-    this.logger.info(
-      `Received new message, replyTo: ${replyTo} \nResponseUrl is ${responseUrl}`
-    );
-    this.logger.debug('Received new message: %j', msg);
+
+    this.logger.info('Received new message');
+
     if (!replyTo || !responseUrl) return;
 
     const { contentType = DEFAULT_CONTENT_TYPE } = msg.body;
-    this.logger.debug(`contentType is ${contentType}`);
 
     const { data } = await new AttachmentProcessor().getAttachment(
       responseUrl,
@@ -52,7 +50,7 @@ exports.process = async function processMessage(msg) {
     reply.headers[HEADER_OBJECT_STORAGE] = objectId;
 
     if (msg.body.customHeaders) {
-      this.logger.debug('Applying custom headers: %j', msg.body.customHeaders);
+      this.logger.debug('Applying custom headers...');
       Object.assign(reply.headers, msg.body.customHeaders);
     }
 
@@ -60,11 +58,10 @@ exports.process = async function processMessage(msg) {
       reply.headers[HEADER_STATUS_CODE] = msg.body.statusCode;
     }
 
-    this.logger.debug('Replying with %j', reply);
+    this.logger.debug('Replying...');
     this.emit('data', reply);
     this.emit('data', messages.newMessageWithBody(msg.body));
   } catch (err) {
-    console.log(err);
     this.logger.error(err.toString());
     this.emit('error', err);
   }
