@@ -19,11 +19,8 @@
     "dotenv": "8.2.0",
     "elasticio-node": "0.0.9",
     "elasticio-sailor-nodejs": "2.6.24",
-<<<<<<< HEAD
     "lodash": "4.17.21",
     "nock": "13.0.11",
-=======
->>>>>>> 7d41328aa9699151985680aca6003accb17fc3f6
     "q": "1.5.1"
   },
   "devDependencies": {
