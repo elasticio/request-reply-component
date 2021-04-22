@@ -4,7 +4,7 @@ const {
 const { messages } = require("elasticio-node");
 const Encryptor = require("elasticio-sailor-nodejs/lib/encryptor");
 const { ObjectStorage } = require("@elastic.io/object-storage-client");
-const allowedContentTypes = ["application/pdf", "image/png"];
+require("dotenv").config();
 
 const JWTToken = process.env.ELASTICIO_OBJECT_STORAGE_TOKEN;
 const maesterUri = process.env.ELASTICIO_OBJECT_STORAGE_URI;
@@ -16,6 +16,12 @@ const HEADER_ROUTING_KEY = "X-EIO-Routing-Key";
 const DEFAULT_CONTENT_TYPE = "application/json";
 const HEADER_STATUS_CODE = "x-eio-status-code";
 const HEADER_OBJECT_STORAGE = "x-ipaas-object-storage-id";
+
+const allowedContentTypes = [
+  DEFAULT_CONTENT_TYPE,
+  "application/pdf",
+  "image/png",
+];
 
 const objectStorage = new ObjectStorage({
   uri: maesterUri,
@@ -63,14 +69,15 @@ exports.process = async function processMessage(msg) {
     }
 
     this.logger.debug("Replying with %j", reply);
-
     this.emit("data", reply);
     this.emit("end");
   } catch (err) {
     console.log(err);
+    this.logger.error(err.toString());
     this.emit("error", err);
   }
 };
+exports.allowedContentTypes = allowedContentTypes;
 
 const getContentType = (msg) => {
   const { contentType } = msg.body;
@@ -80,7 +87,7 @@ const getContentType = (msg) => {
       return contentType;
     }
 
-    throw new Error(`Content-type ${contentType} is not supported`);
+    throw new Error(`Content-type "${contentType}" is not supported`);
   }
 
   return DEFAULT_CONTENT_TYPE;
