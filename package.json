@@ -26,10 +26,10 @@
   "devDependencies": {
     "@elastic.io/component-logger": "0.0.1",
     "chai": "3.5.0",
-    "mocha": "2.5.3",
-    "sinon": "1.17.7",
     "eslint": "6.8.0",
     "eslint-config-airbnb-base": "14.0.0",
-    "eslint-plugin-import": "2.20.0"
+    "eslint-plugin-import": "2.20.0",
+    "mocha": "8.3.2",
+    "sinon": "1.17.7"
   }
 }
