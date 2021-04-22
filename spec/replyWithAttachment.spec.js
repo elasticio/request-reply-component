@@ -7,7 +7,7 @@ const replyWithAttachment = require("../replyWithAttachment");
 const { Readable } = require("stream");
 const { allowedContentTypes } = require("../replyWithAttachment");
 
-xdescribe("Reply with attachment", () => {
+describe("Reply with attachment", () => {
   process.env.ELASTICIO_OBJECT_STORAGE_URI = "http://storage";
   process.env.ELASTICIO_OBJECT_STORAGE_TOKEN = "token";
   process.env.ELASTICIO_MESSAGE_CRYPTO_PASSWORD = "password";
@@ -56,18 +56,20 @@ xdescribe("Reply with attachment", () => {
         expect(saveAttachmentToStore.isDone()).to.be.equal(true);
 
         const spy = self.emit;
-        expect(spy.callCount).to.be.equal(1);
+        expect(spy.callCount).to.be.equal(2);
 
         expect(spy.getCall(0).args[0]).to.be.equal("data");
-
         expect(spy.getCall(0).args[1].headers).to.be.deep.equal({
           "Content-Type": msg.body.contentType,
           "X-EIO-Routing-Key": msg.headers.reply_to,
           "x-ipaas-object-storage-id": storageResponse.objectId,
           ...msg.body.customHeaders,
         });
+        expect(spy.getCall(0).args[1].body).to.be.deep.equal({});
 
-        expect(spy.getCall(0).args[1].body).to.be.deep.equal(msg.body);
+        expect(spy.getCall(1).args[0]).to.be.equal("data");
+        expect(spy.getCall(1).args[1].headers).to.be.deep.equal({});
+        expect(spy.getCall(1).args[1].body).to.be.deep.equal(msg.body);
       });
 
       describe("contentType-s validation", () => {
@@ -95,18 +97,20 @@ xdescribe("Reply with attachment", () => {
             expect(saveAttachmentToStore.isDone()).to.be.equal(true);
 
             const spy = self.emit;
-            expect(spy.callCount).to.be.equal(1);
+            expect(spy.callCount).to.be.equal(2);
 
             expect(spy.getCall(0).args[0]).to.be.equal("data");
-
             expect(spy.getCall(0).args[1].headers).to.be.deep.equal({
               "Content-Type": contentType,
               "X-EIO-Routing-Key": msg.headers.reply_to,
               "x-ipaas-object-storage-id": storageResponse.objectId,
               ...msg.body.customHeaders,
             });
+            expect(spy.getCall(0).args[1].body).to.be.deep.equal({});
 
-            expect(spy.getCall(0).args[1].body).to.be.deep.equal({
+            expect(spy.getCall(1).args[0]).to.be.equal("data");
+            expect(spy.getCall(1).args[1].headers).to.be.deep.equal({});
+            expect(spy.getCall(1).args[1].body).to.be.deep.equal({
               ...msg.body,
               contentType,
             });
