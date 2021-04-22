@@ -1,4 +1,4 @@
-const Q = require("q");
+const Q = require('q');
 const { messages } = require('elasticio-node');
 
 const HEADER_CONTENT_TYPE = 'Content-Type';

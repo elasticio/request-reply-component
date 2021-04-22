@@ -11,21 +11,19 @@
   },
   "author": "elastic.io GmbH",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha --recursive spec/replyWithAttachment.spec.js",
-    "lint": "echo 'no lint found'",
+    "test": "./node_modules/mocha/bin/mocha --recursive spec",
+    "lint": "eslint ./*.js spec/*.js",
     "pretest": "npm run lint"
   },
   "dependencies": {
     "@elastic.io/component-commons-library": "1.1.2",
     "@elastic.io/object-storage-client": "1.0.0",
-    "axios": "0.21.1",
     "dotenv": "8.2.0",
     "elasticio-node": "0.0.9",
     "elasticio-sailor-nodejs": "2.6.24",
-    "lodash": "4.17.15",
+    "lodash": "4.17.21",
     "nock": "13.0.11",
-    "q": "1.5.1",
-    "uuid": "8.3.2"
+    "q": "1.5.1"
   },
   "devDependencies": {
     "@elastic.io/component-logger": "0.0.1",

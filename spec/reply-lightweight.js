@@ -21,7 +21,7 @@ describe('Reply', () => {
         };
         message = messages.newMessageWithBody(body);
         message.headers = {
-            reply_to: 'return_to_webhook',
+            'reply_to': 'return_to_webhook',
             'x-ipaas-object-storage-id': '1234'
         };
     });
