@@ -56,10 +56,9 @@ describe("Reply with attachment", () => {
         expect(saveAttachmentToStore.isDone()).to.be.equal(true);
 
         const spy = self.emit;
-        expect(spy.callCount).to.be.equal(2);
+        expect(spy.callCount).to.be.equal(1);
 
         expect(spy.getCall(0).args[0]).to.be.equal("data");
-        expect(spy.getCall(1).args[0]).to.be.equal("end");
 
         expect(spy.getCall(0).args[1].headers).to.be.deep.equal({
           "Content-Type": msg.body.contentType,
@@ -96,10 +95,9 @@ describe("Reply with attachment", () => {
             expect(saveAttachmentToStore.isDone()).to.be.equal(true);
 
             const spy = self.emit;
-            expect(spy.callCount).to.be.equal(2);
+            expect(spy.callCount).to.be.equal(1);
 
             expect(spy.getCall(0).args[0]).to.be.equal("data");
-            expect(spy.getCall(1).args[0]).to.be.equal("end");
 
             expect(spy.getCall(0).args[1].headers).to.be.deep.equal({
               "Content-Type": contentType,
