@@ -69,8 +69,7 @@ exports.process = async function processMessage(msg) {
     }
 
     this.logger.debug("Replying with %j", reply);
-    this.emit("data", reply);
-    this.emit("end");
+    return this.emit("data", reply);
   } catch (err) {
     console.log(err);
     this.logger.error(err.toString());
