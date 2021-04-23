@@ -21,9 +21,11 @@
           "type": "object",
           "properties": {
             "contentType": {
-              "title": "Content Type (default application/json)",
+              "title": "Content Type",
               "type": "string",
-              "required": false
+              "required": false,
+              "note": "Defaults to application/json",
+              "placeholder": "application/json"
             },
             "responseBody": {
               "title": "Response Body",
@@ -36,7 +38,8 @@
               "type": "number",
               "minimum": 0,
               "maximum": 599,
-              "required": false
+              "required": false,
+              "placeholder": 200
             }
           }
         },
@@ -60,21 +63,25 @@
           "type": "object",
           "properties": {
             "contentType": {
-              "title": "Content Type (default application/json)",
+              "title": "Content Type",
               "type": "string",
-              "required": false
+              "required": false,
+              "note": "Defaults to application/json",
+              "placeholder": "application/json"
             },
             "responseUrl": {
-              "title": "Url To Provide as Response",
+              "title": "Attachment URL",
               "type": "string",
-              "required": true
+              "required": true,
+              "placeholder": "https://your-attachment.url"
             },
             "statusCode": {
               "title": "Response Status Code",
               "type": "number",
               "minimum": 0,
               "maximum": 599,
-              "required": false
+              "required": false,
+              "placeholder": 200
             }
           }
         },
