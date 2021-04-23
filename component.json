@@ -21,7 +21,7 @@
           "type": "object",
           "properties": {
             "contentType": {
-              "title": "Content Type",
+              "title": "Content Type (Defaults to application/json)",
               "type": "string",
               "required": false,
               "note": "Defaults to application/json",
@@ -63,7 +63,7 @@
           "type": "object",
           "properties": {
             "contentType": {
-              "title": "Content Type",
+              "title": "Content Type (Defaults to application/json)",
               "type": "string",
               "required": false,
               "note": "Defaults to application/json",
