@@ -2,7 +2,9 @@ const { AttachmentProcessor, } = require('@elastic.io/component-commons-library'
 const { messages } = require('elasticio-node');
 const Encryptor = require('elasticio-sailor-nodejs/lib/encryptor');
 const { ObjectStorage } = require('@elastic.io/object-storage-client');
-require('dotenv').config();
+// eslint-disable-next-line
+const envFile = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env';
+require('dotenv').config({ path: envFile });
 
 const JWTToken = process.env.ELASTICIO_OBJECT_STORAGE_TOKEN;
 const maesterUri = process.env.ELASTICIO_OBJECT_STORAGE_URI;
