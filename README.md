@@ -6,17 +6,15 @@
 
 The component replies with messages to the client requested a webhook.
 
-### Authentication
-
-This component requires no authentication.
+This component takes the incoming message body and applies the configured JSONata tranformation on it, if present, and return a message back to the client requested a webhook of a given flow.
 
 ### Environment variables
 
 No required environment variables
 
-## How it works
+## Credentials
 
-This component takes the incoming message body and applies the configured JSONata tranformation on it, if present, and return a message back to the client requested a webhook of a given flow.
+This component requires no authentication.
 
 ## Actions
 
@@ -24,23 +22,25 @@ This component takes the incoming message body and applies the configured JSONat
 
 List of Expected Config fields:
 
-- Custom HTTP Headers - the `non-required` header names separated by comma (e.g `Content-Type`, `Content-Language`)
-- Content Type (default `application/json`) - the `non-required` header value tells the client what the content type of the returned content actually is. The action supports only types with `text/...` or `application/...` in the beginning of the header name.
-- Response Body - the `required` field supports JSONata expressions. Max length of a JSONata expression is 1000 symbols.
+- `Custom HTTP Headers` - not required, provides with possibility to set additional headers (e.g `Content-Language`)
+- `Content Type (Defaults to 'application/json')` - not required, header value tells the client what the content type of the returned content actually is. The action supports only types with `text/...` or `application/...` in the beginning of the header name.
+- `Response Body` -  required, supports JSONata expressions. Max length of a JSONata expression is 1000 symbols.
+- `Response Status Code` - not required,user may specify response code, if needed
 
-![image](https://user-images.githubusercontent.com/40201204/81501098-1cfe1f80-92df-11ea-8d99-76211d83fc85.png)
+![image](https://user-images.githubusercontent.com/36419533/115863191-cb8e6800-a43d-11eb-83f2-c859b854db44.png)
 
-### ReplyWithAttachment
+### Reply With Attachment
 
 List of Expected Config fields:
 
-- Custom HTTP Headers - the `non-required` header names separated by comma (e.g `Content-Type`, `Content-Language`)
-- Content Type (default `application/json`) - the `non-required` header value tells the client what the content type of the returned content actually is
-- Attachment URL - the `required` field supports JSONata expressions. Max length of a JSONata expression is 1000 symbols.
+- `Custom HTTP Headers` - non-required, provides with possibility to set additional headers (e.g `Content-Language`)
+- `Content Type (Defaults to 'application/json')` - the `non-required` header value tells the client what the content type of the returned content actually is
+- `Attachment URL` - required, supported are attachments from `stewart` microservice by URL and external attachments URL, Max field length is 1000 symbols.
+- `Response Status Code` - not required, user may specify response code, if needed
 
-![image](https://user-images.githubusercontent.com/30211658/115857013-dd6c0d00-a435-11eb-9ed4-af334b9b77a3.png)
+![image](https://user-images.githubusercontent.com/36419533/115863277-e8c33680-a43d-11eb-9819-667c369b141c.png)
 
-## Known limitations (common for the component)
+## Known limitations
 No.
 
 ## Documentation links
