@@ -28,7 +28,7 @@ jobs:
 
       - run:
           name: Audit Dependencies
-          command: npm audit --audit-level=high
+          command: npm audit --audit-level=critical
 
       - run: npm install
 
