@@ -26,6 +26,10 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
+      - run:
+          name: Audit Dependencies
+          command: npm audit --audit-level=high
+
       - run: npm install
 
       - save_cache:
