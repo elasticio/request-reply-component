@@ -62,6 +62,7 @@ exports.process = async function processMessage(msg) {
 
     this.logger.debug('Replying...');
     this.emit('data', reply);
+    // emit some empty object just for statistic on dashboard
     this.emit('data', messages.newMessageWithBody(msg.body));
   } catch (err) {
     this.logger.error(err.toString());
