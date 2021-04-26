@@ -2,7 +2,8 @@
   "title": "HTTP Reply",
   "service": "request-reply",
   "description": "Used to reply to HTTP webhooks",
-  "buildType":"docker",
+  "buildType": "docker",
+  "version":"1.2.0",
   "actions": {
     "reply": {
       "title": "Reply",
@@ -21,9 +22,11 @@
           "type": "object",
           "properties": {
             "contentType": {
-              "title": "Content Type (default application/json)",
+              "title": "Content Type (Defaults to application/json)",
               "type": "string",
-              "required": false
+              "required": false,
+              "note": "Defaults to application/json",
+              "placeholder": "application/json"
             },
             "responseBody": {
               "title": "Response Body",
@@ -32,11 +35,54 @@
               "maxLength": 1000
             },
             "statusCode": {
-                "title": "Response Status Code",
-                "type": "number",
-                "minimum": 0,
-                "maximum": 599,
-                "required": false
+              "title": "Response Status Code",
+              "type": "number",
+              "minimum": 0,
+              "maximum": 599,
+              "required": false,
+              "placeholder": 200
+            }
+          }
+        },
+        "out": {}
+      }
+    },
+    "replyWithAttachment": {
+      "title": "Reply With Attachment",
+      "main": "./replyWithAttachment.js",
+      "fields": {
+        "customHeaders": {
+          "label": "Custom HTTP Headers",
+          "required": false,
+          "viewClass": "InMetadataExtensionView",
+          "placeholder": "Header names separated by comma (e.g Content-Type,Content-Language)",
+          "titlePrefix": "Header"
+        }
+      },
+      "metadata": {
+        "in": {
+          "type": "object",
+          "properties": {
+            "contentType": {
+              "title": "Content Type (Defaults to application/json)",
+              "type": "string",
+              "required": false,
+              "note": "Defaults to application/json",
+              "placeholder": "application/json"
+            },
+            "responseUrl": {
+              "title": "Attachment URL",
+              "type": "string",
+              "required": true,
+              "placeholder": "https://your-attachment.url"
+            },
+            "statusCode": {
+              "title": "Response Status Code",
+              "type": "number",
+              "minimum": 0,
+              "maximum": 599,
+              "required": false,
+              "placeholder": 200
             }
           }
         },
