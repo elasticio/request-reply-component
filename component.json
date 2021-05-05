@@ -3,7 +3,7 @@
   "service": "request-reply",
   "description": "Used to reply to HTTP webhooks",
   "buildType": "docker",
-  "version":"1.2.0",
+  "version":"1.2.0-dev1",
   "actions": {
     "reply": {
       "title": "Reply",
