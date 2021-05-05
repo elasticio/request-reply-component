@@ -46,7 +46,12 @@ exports.process = async function processMessage(msg) {
 
     const objectId = await objectStorage.addAsStream(() => data, JWTToken);
 
-    const reply = messages.newMessageWithBody({});
+    let body = {};
+    if (process.env.ELASTICIO_FLOW_TYPE === 'debug') {
+      console.log('in debug task');
+      body = { foo: 'bar' };
+    }
+    const reply = messages.newMessageWithBody(body);
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
     reply.headers[HEADER_CONTENT_TYPE] = contentType;
     reply.headers[HEADER_OBJECT_STORAGE] = objectId;
