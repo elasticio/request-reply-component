@@ -38,8 +38,8 @@ exports.process = async function processMessage(msg) {
     this.logger.info('Received new message');
     console.log('replyTo', replyTo, 'responseUrl', responseUrl);
 
-    if (!responseUrl) return;
-    if (!emitSample && !replyTo) return
+    if (!responseUrl) throw new Error('"responseUrl" field can not be empty!');
+    if (!emitSample && !replyTo) return;
 
     const { contentType = DEFAULT_CONTENT_TYPE } = msg.body;
 
