@@ -149,7 +149,7 @@ describe('Reply with attachment', () => {
         expect(call).to.be.equal(null);
       });
 
-      it('should emit error (empty body)', async () => {
+      xit('should emit error (empty body)', async () => {
         const self = {
           emit: sinon.spy(),
           logger,
@@ -163,8 +163,13 @@ describe('Reply with attachment', () => {
         const spy = self.emit;
         const call = spy.getCall(0);
 
-        // only return, no responseUrl
-        expect(call).to.be.equal(null);
+        expect(call.args[0]).to.be.equal('error');
+
+        const error = call.args[1];
+
+        expect(error.message).to.be.equal(
+          "Cannot read property 'headers' of undefined"
+        );
       });
     });
   });
