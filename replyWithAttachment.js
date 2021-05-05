@@ -36,7 +36,6 @@ exports.process = async function processMessage(msg) {
     const emitSample = process.env.ELASTICIO_FLOW_TYPE === 'debug';
 
     this.logger.info('Received new message');
-    console.log('replyTo', replyTo, 'responseUrl', responseUrl);
 
     if (!responseUrl) throw new Error('"responseUrl" field can not be empty!');
     if (!emitSample && !replyTo) return;

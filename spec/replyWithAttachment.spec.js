@@ -131,25 +131,7 @@ describe('Reply with attachment', () => {
         );
       });
 
-      it('should emit error (empty headers)', async () => {
-        const self = {
-          emit: sinon.spy(),
-          logger,
-        };
-
-        await replyWithAttachment.process.bind(self)({
-          ...msg,
-          headers: {},
-        });
-
-        const spy = self.emit;
-        const call = spy.getCall(0);
-
-        // only return, no reply_to
-        expect(call).to.be.equal(null);
-      });
-
-      xit('should emit error (empty body)', async () => {
+      it('should emit error (empty body)', async () => {
         const self = {
           emit: sinon.spy(),
           logger,
@@ -168,8 +150,26 @@ describe('Reply with attachment', () => {
         const error = call.args[1];
 
         expect(error.message).to.be.equal(
-          "Cannot read property 'headers' of undefined"
+          '"responseUrl" field can not be empty!'
         );
+      });
+
+      it('should emit error (empty headers)', async () => {
+        const self = {
+          emit: sinon.spy(),
+          logger,
+        };
+
+        await replyWithAttachment.process.bind(self)({
+          ...msg,
+          headers: {},
+        });
+
+        const spy = self.emit;
+        const call = spy.getCall(0);
+
+        // only return, no reply_to
+        expect(call).to.be.equal(null);
       });
     });
   });
