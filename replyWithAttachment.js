@@ -29,6 +29,7 @@ objectStorage.use(
 );
 
 exports.process = async function processMessage(msg) {
+  console.log('ELASTICIO_FLOW_TYPE ', process.env.ELASTICIO_FLOW_TYPE);
   try {
     const replyTo = msg.headers.reply_to;
     const { responseUrl } = msg.body;
