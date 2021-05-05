@@ -33,10 +33,13 @@ exports.process = async function processMessage(msg) {
   try {
     const replyTo = msg.headers.reply_to;
     const { responseUrl } = msg.body;
+    const emitSample = process.env.ELASTICIO_FLOW_TYPE === 'debug';
 
     this.logger.info('Received new message');
+    console.log('replyTo', replyTo, 'responseUrl', responseUrl);
 
-    if (!replyTo || !responseUrl) return;
+    if (!responseUrl) return;
+    if (!emitSample && !replyTo) return
 
     const { contentType = DEFAULT_CONTENT_TYPE } = msg.body;
 
@@ -47,12 +50,7 @@ exports.process = async function processMessage(msg) {
 
     const objectId = await objectStorage.addAsStream(() => data, JWTToken);
 
-    let body = {};
-    if (process.env.ELASTICIO_FLOW_TYPE === 'debug') {
-      console.log('in debug task');
-      body = { foo: 'bar' };
-    }
-    const reply = messages.newMessageWithBody(body);
+    const reply = messages.newMessageWithBody({});
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
     reply.headers[HEADER_CONTENT_TYPE] = contentType;
     reply.headers[HEADER_OBJECT_STORAGE] = objectId;
