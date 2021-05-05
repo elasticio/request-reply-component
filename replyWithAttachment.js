@@ -1,4 +1,4 @@
-const { AttachmentProcessor, } = require('@elastic.io/component-commons-library');
+const { AttachmentProcessor } = require('@elastic.io/component-commons-library');
 const { messages } = require('elasticio-node');
 const Encryptor = require('elasticio-sailor-nodejs/lib/encryptor');
 const { ObjectStorage } = require('@elastic.io/object-storage-client');
@@ -32,10 +32,12 @@ exports.process = async function processMessage(msg) {
   try {
     const replyTo = msg.headers.reply_to;
     const { responseUrl } = msg.body;
+    const emitSample = process.env.ELASTICIO_FLOW_TYPE === 'debug';
 
     this.logger.info('Received new message');
 
-    if (!replyTo || !responseUrl) return;
+    if (!responseUrl) throw new Error('"responseUrl" field can not be empty!');
+    if (!emitSample && !replyTo) return;
 
     const { contentType = DEFAULT_CONTENT_TYPE } = msg.body;
 

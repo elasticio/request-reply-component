@@ -1,3 +1,6 @@
+## 1.2.1 (May 7, 2021)
+* Fixed bug with action `Reply With Attachment`
+
 ## 1.2.0 (April 23, 2021)
 * Added new action `Reply With Attachment`
 
