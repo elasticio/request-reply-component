@@ -40,6 +40,8 @@ List of Expected Config fields:
 
 ![image](https://user-images.githubusercontent.com/36419533/115863277-e8c33680-a43d-11eb-9819-667c369b141c.png)
 
+*Note:* Please be advised that the action does not actually write an attachment when the sample is retrieved. 
+
 ## Known limitations
 No.
 
