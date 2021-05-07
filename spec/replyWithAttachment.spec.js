@@ -127,7 +127,30 @@ describe('Reply with attachment', () => {
         const error = call.args[1];
 
         expect(error.message).to.be.equal(
-          'Cannot read property \'headers\' of undefined'
+          "Cannot read property 'headers' of undefined"
+        );
+      });
+
+      it('should emit error (empty body)', async () => {
+        const self = {
+          emit: sinon.spy(),
+          logger,
+        };
+
+        await replyWithAttachment.process.bind(self)({
+          ...msg,
+          body: {},
+        });
+
+        const spy = self.emit;
+        const call = spy.getCall(0);
+
+        expect(call.args[0]).to.be.equal('error');
+
+        const error = call.args[1];
+
+        expect(error.message).to.be.equal(
+          '"responseUrl" field can not be empty!'
         );
       });
 
@@ -146,24 +169,6 @@ describe('Reply with attachment', () => {
         const call = spy.getCall(0);
 
         // only return, no reply_to
-        expect(call).to.be.equal(null);
-      });
-
-      it('should emit error (empty body)', async () => {
-        const self = {
-          emit: sinon.spy(),
-          logger,
-        };
-
-        await replyWithAttachment.process.bind(self)({
-          ...msg,
-          body: {},
-        });
-
-        const spy = self.emit;
-        const call = spy.getCall(0);
-
-        // only return, no responseUrl
         expect(call).to.be.equal(null);
       });
     });

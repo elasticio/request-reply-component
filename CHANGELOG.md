@@ -1,5 +1,8 @@
+## 1.2.1 (May 7, 2021)
+* Fixed sample retrieve bug in `Reply With Attachment`  action
+
 ## 1.2.0 (April 23, 2021)
-* Added new action `Reply With Attachment`
+* Added new action: `Reply With Attachment`
 
 ## 1.1.5 (January 28, 2021)
 * Update sailor version to 2.6.24
