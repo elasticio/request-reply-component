@@ -1,3 +1,7 @@
+## 1.2.2 (November 12, 2021)
+* Update sailor version to 2.6.26
+* Fix a bug in the build with different error message
+
 ## 1.2.1 (May 7, 2021)
 * Fixed sample retrieve bug in `Reply With Attachment`  action
 
