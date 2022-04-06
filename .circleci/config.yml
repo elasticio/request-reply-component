@@ -2,7 +2,7 @@ version: 2.1
 parameters:
   node-version:
     type: string
-    default: "16.13.2"
+    default: "14"
 orbs:
   node: circleci/node@5.0.0
   slack: circleci/slack@4.5.3
