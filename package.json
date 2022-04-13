@@ -15,11 +15,11 @@
     "pretest": "npm run lint"
   },
   "dependencies": {
-    "@elastic.io/component-commons-library": "1.1.2",
-    "@elastic.io/object-storage-client": "1.0.0",
+    "@elastic.io/component-commons-library": "2.0.2",
+    "@elastic.io/object-storage-client": "1.0.3",
     "dotenv": "8.2.0",
     "elasticio-node": "0.0.9",
-    "elasticio-sailor-nodejs": "2.6.26",
+    "elasticio-sailor-nodejs": "2.6.27",
     "lodash": "4.17.21",
     "nock": "13.0.11",
     "q": "1.5.1"
