@@ -15,7 +15,7 @@
     "pretest": "npm run lint"
   },
   "dependencies": {
-    "@elastic.io/component-commons-library": "2.0.1",
+    "@elastic.io/component-commons-library": "2.0.2",
     "@elastic.io/object-storage-client": "1.0.3",
     "dotenv": "8.2.0",
     "elasticio-node": "0.0.9",
