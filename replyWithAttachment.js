@@ -17,6 +17,11 @@ const DEFAULT_CONTENT_TYPE = 'application/json';
 const HEADER_STATUS_CODE = 'x-eio-status-code';
 const HEADER_OBJECT_STORAGE = 'x-ipaas-object-storage-id';
 
+// const contentTypes = {
+//   DEFAULT_CONTENT_TYPE: 'json',
+
+// }
+
 const objectStorage = new ObjectStorage({
   uri: maesterUri,
   jwtSecret: JWTToken,
@@ -44,15 +49,20 @@ exports.process = async function processMessage(msg) {
     const { contentType = DEFAULT_CONTENT_TYPE } = msg.body;
     console.log('contentType', contentType);
 
-    const { data } = await new AttachmentProcessor().getAttachment(responseUrl, contentType);
+    const { data } = await new AttachmentProcessor().getAttachment(responseUrl, 'stream');
+    const resUpload = await new AttachmentProcessor().uploadAttachment(data);
+    console.log(JSON.stringify(resUpload));
+    const { objectId } = resUpload.data;
+    console.log('aa,', resUpload.data.contentType);
     // console.log('getAttachment done');
-    const objectId2 = responseUrl.split(':3002/objects/')[1].split('?')[0];
-    const objectId = await objectStorage.addAsJSON(data, JWTToken);
-    console.log('objectId', objectId, objectId2);
+    // const objectId2 = responseUrl.split(':3002/objects/')[1].split('?')[0];
+    // const objectId = await objectStorage.addAsJSON(data, JWTToken);
+
+    console.log('objectId', objectId);
 
     const reply = messages.newMessageWithBody({});
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
-    reply.headers[HEADER_CONTENT_TYPE] = contentType;
+    reply.headers[HEADER_CONTENT_TYPE] = resUpload.data.contentType;
     reply.headers[HEADER_OBJECT_STORAGE] = objectId;
 
     if (msg.body.customHeaders) {
