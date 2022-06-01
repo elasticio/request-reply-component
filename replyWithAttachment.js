@@ -46,7 +46,7 @@ exports.process = async function processMessage(msg) {
       'stream'
     );
 
-    const objectId = await objectStorage.addAsStream(() => data, JWTToken);
+    const objectId = await objectStorage.addAsStream(data);
 
     const reply = messages.newMessageWithBody({});
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
