@@ -2,7 +2,7 @@ version: 2.1
 parameters:
   node-version:
     type: string
-    default: "14"
+    default: "16.13.2"
 orbs:
   node: circleci/node@5.0.0
   slack: circleci/slack@4.5.3
@@ -72,23 +72,23 @@ commands:
 jobs:
   test:
     docker:
-      - image: cimg/base:stable
+      - image: circleci/node:16-stretch
     steps:
       - checkout
       - node/install:
           node-version: << pipeline.parameters.node-version >>
       - run:
           name: Audit Dependencies
-          command: npm audit --audit-level=high
+          command: npm audit --production --audit-level=high
       - node/install-packages:
           cache-path: ./node_modules
           override-ci-command: npm install
       - run:
-          name: test
+          name: Running Mocha Tests
           command: npm test
   build:
     docker:
-      - image: circleci/node:14-stretch
+      - image: circleci/node:16-stretch
         user: root
     steps:
       - checkout
@@ -97,6 +97,7 @@ jobs:
       - setup_remote_docker:
           version: 19.03.13
           docker_layer_caching: true
+      # build and push Docker image
       - run:
           name: Install component-build-helper lib
           command: npm install -g @elastic.io/component-build-helper
