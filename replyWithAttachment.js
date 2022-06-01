@@ -43,11 +43,11 @@ exports.process = async function processMessage(msg) {
 
     const { contentType = DEFAULT_CONTENT_TYPE } = msg.body;
     console.log('contentType', contentType);
-    console.log('responseUrl', responseUrl);
 
     const { data } = await new AttachmentProcessor().getAttachment(responseUrl);
-
-    const objectId = await objectStorage.addAsStream(data, JWTToken);
+    console.log('getAttachment done');
+    const objectId = responseUrl.split(':3002/objects/')[1].split('?')[0];
+    // const objectId = await objectStorage.addAsStream(data, JWTToken);
     console.log('objectId', objectId);
 
     const reply = messages.newMessageWithBody({});
