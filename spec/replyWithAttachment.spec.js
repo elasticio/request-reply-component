@@ -30,7 +30,7 @@ describe('Reply with attachment', () => {
     return stream;
   };
 
-  describe('replyWithAttachment', () => {
+  xdescribe('replyWithAttachment', () => {
     describe('emit reply', () => {
       it(`should emit reply with attachment(${msg.body.contentType})`, async () => {
         const self = {
