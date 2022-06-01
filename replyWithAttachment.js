@@ -31,7 +31,9 @@ objectStorage.use(
 exports.process = async function processMessage(msg) {
   try {
     const replyTo = msg.headers.reply_to;
+    console.log('replyTo', replyTo);
     const { responseUrl } = msg.body;
+    console.log('responseUrl', responseUrl);
     const emitSample = process.env.ELASTICIO_FLOW_TYPE === 'debug';
 
     this.logger.info('Received new message');
@@ -40,13 +42,13 @@ exports.process = async function processMessage(msg) {
     if (!emitSample && !replyTo) return;
 
     const { contentType = DEFAULT_CONTENT_TYPE } = msg.body;
+    console.log('contentType', contentType);
+    console.log('responseUrl', responseUrl);
 
-    const { data } = await new AttachmentProcessor().getAttachment(
-      responseUrl,
-      'stream'
-    );
+    const { data } = await new AttachmentProcessor().getAttachment(responseUrl);
 
-    const objectId = await objectStorage.addAsStream(data);
+    const objectId = await objectStorage.addAsStream(data, JWTToken);
+    console.log('objectId', objectId);
 
     const reply = messages.newMessageWithBody({});
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
