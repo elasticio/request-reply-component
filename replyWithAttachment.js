@@ -44,7 +44,7 @@ exports.process = async function processMessage(msg) {
     const { contentType = DEFAULT_CONTENT_TYPE } = msg.body;
     console.log('contentType', contentType);
 
-    const { data } = await new AttachmentProcessor().getAttachment(responseUrl);
+    const { data } = await new AttachmentProcessor().getAttachment(responseUrl, contentType);
     console.log('getAttachment done');
     const objectId = responseUrl.split(':3002/objects/')[1].split('?')[0];
     // const objectId = await objectStorage.addAsStream(data, JWTToken);
