@@ -50,19 +50,11 @@ exports.process = async function processMessage(msg) {
     console.log('contentType', contentType);
 
     const { data } = await new AttachmentProcessor().getAttachment(responseUrl, 'stream');
-    const resUpload = await new AttachmentProcessor().uploadAttachment(data);
-    console.log(JSON.stringify(resUpload.data));
-    const { objectId } = resUpload.data;
-    console.log('aa,', resUpload.data.contentType);
-    // console.log('getAttachment done');
-    // const objectId2 = responseUrl.split(':3002/objects/')[1].split('?')[0];
-    // const objectId = await objectStorage.addAsJSON(data, JWTToken);
-
-    console.log('objectId', objectId);
+    const objectId = await objectStorage.addAsStream(data, JWTToken);
 
     const reply = messages.newMessageWithBody({});
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
-    reply.headers[HEADER_CONTENT_TYPE] = contentType;
+    reply.headers[HEADER_CONTENT_TYPE] = 'application/octet-stream';
     reply.headers[HEADER_OBJECT_STORAGE] = objectId;
 
     if (msg.body.customHeaders) {
