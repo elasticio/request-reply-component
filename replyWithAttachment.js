@@ -51,7 +51,7 @@ exports.process = async function processMessage(msg) {
 
     const { data } = await new AttachmentProcessor().getAttachment(responseUrl, 'stream');
     const resUpload = await new AttachmentProcessor().uploadAttachment(data);
-    console.log(JSON.stringify(resUpload));
+    console.log(JSON.stringify(resUpload.data));
     const { objectId } = resUpload.data;
     console.log('aa,', resUpload.data.contentType);
     // console.log('getAttachment done');
@@ -62,7 +62,7 @@ exports.process = async function processMessage(msg) {
 
     const reply = messages.newMessageWithBody({});
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
-    reply.headers[HEADER_CONTENT_TYPE] = resUpload.data.contentType;
+    reply.headers[HEADER_CONTENT_TYPE] = contentType;
     reply.headers[HEADER_OBJECT_STORAGE] = objectId;
 
     if (msg.body.customHeaders) {
