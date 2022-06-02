@@ -42,10 +42,11 @@ exports.process = async function processMessage(msg) {
     const { contentType = DEFAULT_CONTENT_TYPE } = msg.body;
     let objectId;
 
-    const { data } = await new AttachmentProcessor().getAttachment(responseUrl, 'stream');
     if (contentType === DEFAULT_CONTENT_TYPE) {
+      const { data } = await new AttachmentProcessor().getAttachment(responseUrl, 'json');
       objectId = await objectStorage.addAsJSON(data, JWTToken);
     } else {
+      const { data } = await new AttachmentProcessor().getAttachment(responseUrl, 'stream');
       objectId = await objectStorage.addAsStream(data, JWTToken);
     }
 
