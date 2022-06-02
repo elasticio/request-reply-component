@@ -40,9 +40,14 @@ exports.process = async function processMessage(msg) {
     if (!emitSample && !replyTo) return;
 
     const { contentType = DEFAULT_CONTENT_TYPE } = msg.body;
+    let objectId;
 
     const { data } = await new AttachmentProcessor().getAttachment(responseUrl, 'stream');
-    const objectId = await objectStorage.addAsStream(data, JWTToken);
+    if (contentType === DEFAULT_CONTENT_TYPE) {
+      objectId = await objectStorage.addAsJSON(data, JWTToken);
+    } else {
+      objectId = await objectStorage.addAsStream(data, JWTToken);
+    }
 
     const reply = messages.newMessageWithBody({});
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
