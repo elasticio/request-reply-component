@@ -1,7 +1,10 @@
+/* eslint-disable prefer-destructuring */
+/* eslint-disable prefer-const */
 const { AttachmentProcessor } = require('@elastic.io/component-commons-library');
 const { messages } = require('elasticio-node');
 const Encryptor = require('elasticio-sailor-nodejs/lib/encryptor');
 const { ObjectStorage } = require('@elastic.io/object-storage-client');
+const { ObjectStorage: ObjectStorageCustom } = require('@elastic.io/maester-client/dist/ObjectStorage');
 // eslint-disable-next-line
 const envFile = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env';
 require('dotenv').config({ path: envFile });
@@ -16,11 +19,6 @@ const HEADER_ROUTING_KEY = 'X-EIO-Routing-Key';
 const DEFAULT_CONTENT_TYPE = 'application/json';
 const HEADER_STATUS_CODE = 'x-eio-status-code';
 const HEADER_OBJECT_STORAGE = 'x-ipaas-object-storage-id';
-
-// const contentTypes = {
-//   DEFAULT_CONTENT_TYPE: 'json',
-
-// }
 
 const objectStorage = new ObjectStorage({
   uri: maesterUri,
@@ -51,7 +49,7 @@ exports.process = async function processMessage(msg) {
 
     const reply = messages.newMessageWithBody({});
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
-    reply.headers[HEADER_CONTENT_TYPE] = 'application/octet-stream';
+    reply.headers[HEADER_CONTENT_TYPE] = contentType;
     reply.headers[HEADER_OBJECT_STORAGE] = objectId;
 
     if (msg.body.customHeaders) {

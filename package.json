@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@elastic.io/component-commons-library": "2.1.0",
+    "@elastic.io/maester-client": "3.4.3-dev.2",
     "@elastic.io/object-storage-client": "2.0.0",
     "dotenv": "8.2.0",
     "elasticio-node": "0.0.9",
