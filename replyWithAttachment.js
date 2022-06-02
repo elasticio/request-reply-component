@@ -1,10 +1,7 @@
-/* eslint-disable prefer-destructuring */
-/* eslint-disable prefer-const */
 const { AttachmentProcessor } = require('@elastic.io/component-commons-library');
 const { messages } = require('elasticio-node');
 const Encryptor = require('elasticio-sailor-nodejs/lib/encryptor');
 const { ObjectStorage } = require('@elastic.io/object-storage-client');
-const { ObjectStorage: ObjectStorageCustom } = require('@elastic.io/maester-client/dist/ObjectStorage');
 // eslint-disable-next-line
 const envFile = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env';
 require('dotenv').config({ path: envFile });
