@@ -53,7 +53,7 @@ exports.process = async function processMessage(msg) {
     ).data));
     const objectId = await objectStorage.add(async () => (
       await new AttachmentProcessor().getAttachment(responseUrl, 'stream')
-    ).data, { jwtPayload: JWTToken });
+    ).data);
 
     const reply = messages.newMessageWithBody({});
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
