@@ -2,6 +2,7 @@ const { AttachmentProcessor } = require('@elastic.io/component-commons-library')
 const { messages } = require('elasticio-node');
 const Encryptor = require('elasticio-sailor-nodejs/lib/encryptor');
 const { ObjectStorage } = require('@elastic.io/maester-client');
+const { getMimeType } = require('stream-mime-type');
 // const { ObjectStorage } = require('@elastic.io/object-storage-client');
 // eslint-disable-next-line
 const envFile = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env';
@@ -29,6 +30,12 @@ objectStorage.use(
   () => encryptor.createDecipher()
 );
 
+const getStreamContentType = async (stream) => {
+  const { mime } = await getMimeType(stream);
+  return mime === 'application/octet-stream' ? 'application/json' : mime;
+};
+
+
 exports.process = async function processMessage(msg) {
   try {
     const replyTo = msg.headers.reply_to;
@@ -41,6 +48,9 @@ exports.process = async function processMessage(msg) {
     if (!emitSample && !replyTo) return;
 
     const { contentType = DEFAULT_CONTENT_TYPE } = msg.body;
+    console.log(1, await getStreamContentType((
+      await new AttachmentProcessor().getAttachment(responseUrl, 'stream')
+    ).data));
     const objectId = await objectStorage.add(async () => (
       await new AttachmentProcessor().getAttachment(responseUrl, 'stream')
     ).data, { jwtPayload: JWTToken });

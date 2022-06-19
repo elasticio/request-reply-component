@@ -23,7 +23,8 @@
     "elasticio-sailor-nodejs": "2.6.27",
     "lodash": "4.17.21",
     "nock": "13.0.11",
-    "q": "1.5.1"
+    "q": "1.5.1",
+    "stream-mime-type": "^1.0.2"
   },
   "devDependencies": {
     "@elastic.io/component-logger": "0.0.1",
