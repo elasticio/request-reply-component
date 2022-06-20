@@ -6,7 +6,7 @@ const logger = require('@elastic.io/component-logger')();
 const { Readable } = require('stream');
 const replyWithAttachment = require('../replyWithAttachment');
 
-xdescribe('Reply with attachment', () => {
+describe('Reply with attachment', () => {
   const msg = messages.newMessageWithBody({
     contentType: 'image/png',
     responseUrl: 'http://fake_api',
