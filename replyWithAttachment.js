@@ -22,11 +22,11 @@ const objectStorage = new ObjectStorage({
   jwtSecret: JWTToken,
 });
 
-// const encryptor = new Encryptor(PASSWORD, VECTOR);
-// objectStorage.use(
-//   () => encryptor.createCipher(),
-//   () => encryptor.createDecipher()
-// );
+const encryptor = new Encryptor(PASSWORD, VECTOR);
+objectStorage.use(
+  () => encryptor.createCipher(),
+  () => encryptor.createDecipher()
+);
 
 exports.process = async function processMessage(msg) {
   try {
