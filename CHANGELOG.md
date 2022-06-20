@@ -1,3 +1,6 @@
+## 1.2.4 (June 20, 2022)
+* Change library for attachments processing (object-storage-client => maester-client)  
+
 ## 1.2.3 (April 14, 2022)
 * Update Sailor version to 2.6.27
 * Get rid of vulnerabilities in dependencies
