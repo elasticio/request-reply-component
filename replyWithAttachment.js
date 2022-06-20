@@ -45,6 +45,9 @@ exports.process = async function processMessage(msg) {
       await new AttachmentProcessor().getAttachment(responseUrl, 'stream')
     ).data);
     console.log(objectId);
+    const rr = await objectStorage.getHeaders(objectId);
+    console.log(1, rr);
+    console.log(2, rr['content-type']);
     // const objectId = await objectStorage.addAsStream(async () => (
     //   await new AttachmentProcessor().getAttachment(responseUrl, 'stream')
     // ).data, { jwtPayloadOrToken: JWTToken }, { contentType });
