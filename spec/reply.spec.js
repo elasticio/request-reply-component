@@ -4,7 +4,7 @@ const { messages } = require('elasticio-node');
 const logger = require('@elastic.io/component-logger')();
 const reply = require('../reply.js');
 
-xdescribe('Reply', () => {
+describe('Reply', () => {
   process.env.ELASTICIO_EXEC_ID = 'my_exec_123';
   process.env.DEBUG = 'request-reply';
 
