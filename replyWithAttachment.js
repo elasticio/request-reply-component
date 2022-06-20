@@ -43,7 +43,6 @@ exports.process = async function processMessage(msg) {
     const objectId = await objectStorage.add(async () => (
       await new AttachmentProcessor().getAttachment(responseUrl, 'stream')
     ).data);
-    console.log(objectId);
 
     const reply = messages.newMessageWithBody({});
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
