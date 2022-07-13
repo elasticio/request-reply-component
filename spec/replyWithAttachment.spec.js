@@ -41,7 +41,7 @@ describe('Reply with attachment', () => {
       afterEach(() => {
         sinon.restore();
       });
-      xit(`should emit reply with attachment(${msg.body.contentType})`, async () => {
+      it(`should emit reply with attachment(${msg.body.contentType})`, async () => {
         const self = {
           emit: sinon.spy(),
           logger,
@@ -66,7 +66,7 @@ describe('Reply with attachment', () => {
         expect(spy.getCall(1).args[1].body).to.be.deep.equal(msg.body);
       });
 
-      xit('should emit reply with attachment(use default contentType)', async () => {
+      it('should emit reply with attachment(use default contentType)', async () => {
         const msgNoContentType = JSON.parse(JSON.stringify(msg));
         delete msgNoContentType.body.contentType;
 

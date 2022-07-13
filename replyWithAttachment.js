@@ -22,11 +22,11 @@ const objectStorage = new ObjectStorage({
   jwtSecret: JWTToken,
 });
 
-// const encryptor = new Encryptor(PASSWORD, VECTOR);
-// objectStorage.use(
-//   () => encryptor.createCipher(),
-//   () => encryptor.createDecipher()
-// );
+const encryptor = new Encryptor(PASSWORD, VECTOR);
+objectStorage.use(
+  () => encryptor.createCipher(),
+  () => encryptor.createDecipher()
+);
 
 exports.process = async function processMessage(msg) {
   try {
@@ -39,14 +39,10 @@ exports.process = async function processMessage(msg) {
     if (!responseUrl) throw new Error('"responseUrl" field can not be empty!');
     if (!emitSample && !replyTo) return;
 
-    const { contentType } = msg.body;
-    const headers = {};
-    if (contentType) headers['content-type'] = contentType;
+    const { contentType = DEFAULT_CONTENT_TYPE } = msg.body;
     const objectId = await objectStorage.add(async () => (
       await new AttachmentProcessor().getAttachment(responseUrl, 'stream')
-    ).data, { headers });
-    const resHeaders = await objectStorage.getHeaders(objectId);
-    console.log(resHeaders['content-type']);
+    ).data);
 
     const reply = messages.newMessageWithBody({});
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
