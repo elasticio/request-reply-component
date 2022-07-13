@@ -98,7 +98,7 @@ describe('Reply with attachment', () => {
     });
 
     describe('emit error', () => {
-      xit('should emit error (no message)', async () => {
+      it('should emit error (no message)', async () => {
         const self = {
           emit: sinon.spy(),
           logger,
