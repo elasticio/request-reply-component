@@ -1,5 +1,4 @@
 const sinon = require('sinon');
-const nock = require('nock');
 const { expect } = require('chai');
 const { messages } = require('elasticio-node');
 const logger = require('@elastic.io/component-logger')();
@@ -112,10 +111,7 @@ describe('Reply with attachment', () => {
         expect(call.args[0]).to.be.equal('error');
 
         const error = call.args[1];
-
-        expect(error.message).to.be.equal(
-          "Cannot read property 'headers' of undefined"
-        );
+        expect(error.message.includes('headers')).to.be.equal(true);
       });
 
       it('should emit error (empty body)', async () => {
