@@ -40,12 +40,14 @@ exports.process = async function processMessage(msg) {
     if (!emitSample && !replyTo) return;
 
     const { contentType } = msg.body;
+    const headers = {};
+    if (contentType) headers['content-type'] = contentType;
     const objectId = await objectStorage.add(async () => (
       await new AttachmentProcessor().getAttachment(responseUrl, 'stream')
-    ).data);
+    ).data, { headers });
     console.log(objectId);
-    const headers = await objectStorage.getHeaders(objectId);
-    console.log(headers['content-type'], headers);
+    const resHeaders = await objectStorage.getHeaders(objectId);
+    console.log(resHeaders['content-type'], resHeaders);
 
     const reply = messages.newMessageWithBody({});
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
