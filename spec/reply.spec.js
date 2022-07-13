@@ -85,7 +85,7 @@ describe('Reply', () => {
       setTimeout(done, 50);
     });
 
-    xit('should emit error', () => {
+    it('should emit error', () => {
       const spy = self.emit;
       const call = spy.getCall(0);
 
