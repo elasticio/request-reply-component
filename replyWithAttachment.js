@@ -22,11 +22,11 @@ const objectStorage = new ObjectStorage({
   jwtSecret: JWTToken,
 });
 
-const encryptor = new Encryptor(PASSWORD, VECTOR);
-objectStorage.use(
-  () => encryptor.createCipher(),
-  () => encryptor.createDecipher()
-);
+// const encryptor = new Encryptor(PASSWORD, VECTOR);
+// objectStorage.use(
+//   () => encryptor.createCipher(),
+//   () => encryptor.createDecipher()
+// );
 
 exports.process = async function processMessage(msg) {
   try {
@@ -45,9 +45,8 @@ exports.process = async function processMessage(msg) {
     const objectId = await objectStorage.add(async () => (
       await new AttachmentProcessor().getAttachment(responseUrl, 'stream')
     ).data, { headers });
-    console.log(objectId);
     const resHeaders = await objectStorage.getHeaders(objectId);
-    console.log(resHeaders['content-type'], resHeaders);
+    console.log(resHeaders['content-type']);
 
     const reply = messages.newMessageWithBody({});
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
