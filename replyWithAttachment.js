@@ -39,10 +39,13 @@ exports.process = async function processMessage(msg) {
     if (!responseUrl) throw new Error('"responseUrl" field can not be empty!');
     if (!emitSample && !replyTo) return;
 
-    const { contentType = DEFAULT_CONTENT_TYPE } = msg.body;
+    const { contentType } = msg.body;
     const objectId = await objectStorage.add(async () => (
       await new AttachmentProcessor().getAttachment(responseUrl, 'stream')
     ).data);
+    console.log(objectId);
+    const headers = await objectStorage.getHeaders(objectId);
+    console.log(headers['content-type'], headers);
 
     const reply = messages.newMessageWithBody({});
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
