@@ -1,8 +1,9 @@
 const sinon = require('sinon');
-const nock = require('nock');
 const { expect } = require('chai');
 const { messages } = require('elasticio-node');
 const logger = require('@elastic.io/component-logger')();
+const { AttachmentProcessor } = require('@elastic.io/component-commons-library');
+const { ObjectStorage } = require('@elastic.io/maester-client');
 const { Readable } = require('stream');
 const replyWithAttachment = require('../replyWithAttachment');
 
@@ -32,24 +33,20 @@ describe('Reply with attachment', () => {
 
   describe('replyWithAttachment', () => {
     describe('emit reply', () => {
+      beforeEach(() => {
+        sinon.stub(AttachmentProcessor.prototype, 'getAttachment').callsFake(async () => getFakeStream());
+        sinon.stub(ObjectStorage.prototype, 'add').callsFake(async () => storageResponse.objectId);
+      });
+      afterEach(() => {
+        sinon.restore();
+      });
       it(`should emit reply with attachment(${msg.body.contentType})`, async () => {
         const self = {
           emit: sinon.spy(),
           logger,
         };
 
-        const getAttachment = nock(msg.body.responseUrl)
-          .get('/')
-          .reply(200, getFakeStream());
-        const saveAttachmentToStore = nock(
-          process.env.ELASTICIO_OBJECT_STORAGE_URI
-        )
-          .post('/objects')
-          .reply(200, storageResponse);
-
         await replyWithAttachment.process.bind(self)(msg);
-        expect(getAttachment.isDone()).to.be.equal(true);
-        expect(saveAttachmentToStore.isDone()).to.be.equal(true);
 
         const spy = self.emit;
         expect(spy.callCount).to.be.equal(2);
@@ -77,18 +74,7 @@ describe('Reply with attachment', () => {
           logger,
         };
 
-        const getAttachment = nock(msgNoContentType.body.responseUrl)
-          .get('/')
-          .reply(200, getFakeStream());
-        const saveAttachmentToStore = nock(
-          process.env.ELASTICIO_OBJECT_STORAGE_URI
-        )
-          .post('/objects')
-          .reply(200, storageResponse);
-
         await replyWithAttachment.process.bind(self)(msgNoContentType);
-        expect(getAttachment.isDone()).to.be.equal(true);
-        expect(saveAttachmentToStore.isDone()).to.be.equal(true);
 
         const spy = self.emit;
         expect(spy.callCount).to.be.equal(2);
@@ -125,10 +111,7 @@ describe('Reply with attachment', () => {
         expect(call.args[0]).to.be.equal('error');
 
         const error = call.args[1];
-
-        expect(error.message).to.be.equal(
-          "Cannot read property 'headers' of undefined"
-        );
+        expect(error.message.includes('headers')).to.be.equal(true);
       });
 
       it('should emit error (empty body)', async () => {

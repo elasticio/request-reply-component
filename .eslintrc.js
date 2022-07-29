@@ -13,7 +13,7 @@ module.exports = {
     mocha: true,
   },
   parserOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion: 2019,
   },
   extends: 'airbnb-base',
   rules: {
@@ -24,6 +24,7 @@ module.exports = {
         SwitchCase: 1,
       },
     ],
+    'max-len': ['error', { code: 180 }],
     'linebreak-style': ERROR,
     quotes: [WARN, 'single'],
     semi: [ERROR, ALWAYS],
@@ -59,7 +60,6 @@ module.exports = {
     'comma-dangle': 0,
     'no-trailing-spaces': ERROR,
     yoda: ERROR,
-    'max-len': [ERROR, 120],
     camelcase: [
       ERROR,
       {

@@ -1,5 +1,6 @@
 const sinon = require('sinon');
 require('chai').should();
+const { expect } = require('chai');
 const { messages } = require('elasticio-node');
 const logger = require('@elastic.io/component-logger')();
 const reply = require('../reply.js');
@@ -93,9 +94,7 @@ describe('Reply', () => {
 
       const error = call.args[1];
 
-      error.message.should.be.equal(
-        'Cannot read property \'contentType\' of undefined'
-      );
+      expect(error.message.includes('contentType')).to.be.equal(true);
     });
 
     it('should emit end', () => {

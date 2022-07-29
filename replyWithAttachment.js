@@ -1,8 +1,8 @@
 const { AttachmentProcessor } = require('@elastic.io/component-commons-library');
 const { messages } = require('elasticio-node');
 const Encryptor = require('elasticio-sailor-nodejs/lib/encryptor');
-const { ObjectStorage } = require('@elastic.io/object-storage-client');
-// eslint-disable-next-line
+const { ObjectStorage } = require('@elastic.io/maester-client');
+
 const envFile = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env';
 require('dotenv').config({ path: envFile });
 
@@ -40,13 +40,9 @@ exports.process = async function processMessage(msg) {
     if (!emitSample && !replyTo) return;
 
     const { contentType = DEFAULT_CONTENT_TYPE } = msg.body;
-
-    const { data } = await new AttachmentProcessor().getAttachment(
-      responseUrl,
-      'stream'
-    );
-
-    const objectId = await objectStorage.addAsStream(() => data, JWTToken);
+    const objectId = await objectStorage.add(async () => (
+      await new AttachmentProcessor().getAttachment(responseUrl, 'stream')
+    ).data);
 
     const reply = messages.newMessageWithBody({});
     reply.headers[HEADER_ROUTING_KEY] = replyTo;
