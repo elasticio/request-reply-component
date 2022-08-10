@@ -43,7 +43,7 @@ exports.process = async function processMessage(msg) {
 
     const { contentType = DEFAULT_CONTENT_TYPE } = msg.body;
     const objectId = await objectStorage.add(async () => (
-      await new AttachmentProcessor().getAttachment(responseUrl, 'stream')
+      await new AttachmentProcessor(getUserAgent()).getAttachment(responseUrl, 'stream')
     ).data);
 
     const reply = messages.newMessageWithBody({});
