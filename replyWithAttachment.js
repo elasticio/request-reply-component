@@ -21,7 +21,7 @@ const HEADER_OBJECT_STORAGE = 'x-ipaas-object-storage-id';
 const objectStorage = new ObjectStorage({
   uri: maesterUri,
   jwtSecret: JWTToken,
-  userAgent: getUserAgent()
+  userAgent: getUserAgent('maester-client')
 });
 
 const encryptor = new Encryptor(PASSWORD, VECTOR);
@@ -43,7 +43,7 @@ exports.process = async function processMessage(msg) {
 
     const { contentType = DEFAULT_CONTENT_TYPE } = msg.body;
     const objectId = await objectStorage.add(async () => (
-      await new AttachmentProcessor(getUserAgent()).getAttachment(responseUrl, 'stream')
+      await new AttachmentProcessor(getUserAgent('component-commons-library')).getAttachment(responseUrl, 'stream')
     ).data);
 
     const reply = messages.newMessageWithBody({});
