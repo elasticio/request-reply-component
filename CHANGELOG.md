@@ -3,6 +3,7 @@
 * Updated @elasticio/component-commons-library to v3.0.1
 
 
+
 ## 1.2.4 (July 29, 2022)
 * Change library for attachments processing (object-storage-client => maester-client)  
 * Update component-commons-library to 3.0.0  
