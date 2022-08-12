@@ -2,6 +2,7 @@ const { AttachmentProcessor } = require('@elastic.io/component-commons-library')
 const { messages } = require('elasticio-node');
 const Encryptor = require('elasticio-sailor-nodejs/lib/encryptor');
 const { ObjectStorage } = require('@elastic.io/maester-client');
+const { getUserAgent } = require('./utils');
 
 const envFile = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env';
 require('dotenv').config({ path: envFile });
@@ -20,6 +21,7 @@ const HEADER_OBJECT_STORAGE = 'x-ipaas-object-storage-id';
 const objectStorage = new ObjectStorage({
   uri: maesterUri,
   jwtSecret: JWTToken,
+  userAgent: getUserAgent('maester-client')
 });
 
 const encryptor = new Encryptor(PASSWORD, VECTOR);
@@ -41,7 +43,7 @@ exports.process = async function processMessage(msg) {
 
     const { contentType = DEFAULT_CONTENT_TYPE } = msg.body;
     const objectId = await objectStorage.add(async () => (
-      await new AttachmentProcessor().getAttachment(responseUrl, 'stream')
+      await new AttachmentProcessor(getUserAgent('component-commons-library')).getAttachment(responseUrl, 'stream')
     ).data);
 
     const reply = messages.newMessageWithBody({});
