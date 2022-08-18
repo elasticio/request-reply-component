@@ -1,4 +1,4 @@
-## 1.2.5 (August 26, 2022)
+## 1.2.6 (August 26, 2022)
 * Updated @elasticio/maester-client to v4.0.3
 * Updated @elasticio/component-commons-library to v3.0.2
 
