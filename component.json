@@ -2,7 +2,7 @@
   "title": "HTTP Reply",
   "service": "request-reply",
   "description": "Used to reply to HTTP webhooks",
-  "version": "1.2.6-dev.1",
+  "version": "1.2.6",
   "actions": {
     "reply": {
       "title": "Reply",
