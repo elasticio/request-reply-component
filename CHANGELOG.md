@@ -1,3 +1,6 @@
+## 1.2.7 (November 04, 2022)
+* Updated the sailor version to 2.7.1
+
 ## 1.2.6 (August 26, 2022)
 * Updated @elasticio/maester-client to v4.0.3
 * Updated @elasticio/component-commons-library to v3.0.2
