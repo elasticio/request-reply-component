@@ -1,3 +1,7 @@
+## 1.3.0 (June 30, 2023)
+* Updated README
+* Get rid of vulnerabilities and unused libraries in dependencies
+
 ## 1.2.7 (November 04, 2022)
 * Updated the sailor version to 2.7.1
 

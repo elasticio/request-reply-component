@@ -2,11 +2,11 @@
   "title": "HTTP Reply",
   "service": "request-reply",
   "description": "Used to reply to HTTP webhooks",
-  "version": "1.2.7",
+  "version": "1.3.0-dev.7",
   "actions": {
     "reply": {
       "title": "Reply",
-      "main": "./reply.js",
+      "main": "./lib/actions/replyWithBody.js",
       "fields": {
         "customHeaders": {
           "label": "Custom HTTP Headers",
@@ -43,12 +43,12 @@
             }
           }
         },
-        "out": {}
+        "out": "./lib/schemas/actions/replyWithBody.out.json"
       }
     },
     "replyWithAttachment": {
       "title": "Reply With Attachment",
-      "main": "./replyWithAttachment.js",
+      "main": "./lib/actions/replyWithAttachment.js",
       "fields": {
         "customHeaders": {
           "label": "Custom HTTP Headers",
@@ -85,7 +85,7 @@
             }
           }
         },
-        "out": {}
+        "out": "./lib/schemas/actions/replyWithAttachment.out.json"
       }
     }
   }

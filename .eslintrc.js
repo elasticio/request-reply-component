@@ -1,5 +1,3 @@
-'use strict';
-
 const ERROR = 'error';
 const WARN = 'warn';
 const ALWAYS = 'always';
@@ -17,17 +15,18 @@ module.exports = {
   },
   extends: 'airbnb-base',
   rules: {
-    indent: [
+    'indent': [
       ERROR,
       2,
       {
         SwitchCase: 1,
       },
     ],
+    'import/no-extraneous-dependencies': ['error', { devDependencies: ['spec/**/*', 'spec-integration/**/*'] }],
     'max-len': ['error', { code: 180 }],
     'linebreak-style': ERROR,
-    quotes: [WARN, 'single'],
-    semi: [ERROR, ALWAYS],
+    'quotes': [WARN, 'single'],
+    'semi': [ERROR, ALWAYS],
     'func-names': 0,
     'no-shadow': 0,
     'no-empty': ERROR,
@@ -59,13 +58,8 @@ module.exports = {
     'space-in-parens': ERROR,
     'comma-dangle': 0,
     'no-trailing-spaces': ERROR,
-    yoda: ERROR,
-    camelcase: [
-      ERROR,
-      {
-        properties: 'never',
-      },
-    ],
+    'yoda': ERROR,
+    'camelcase': 0,
     'new-cap': [
       WARN,
       {
@@ -73,16 +67,9 @@ module.exports = {
       },
     ],
     'comma-style': ERROR,
-    curly: ERROR,
+    'curly': ERROR,
     'object-curly-spacing': [WARN, ALWAYS],
-    'object-curly-newline': [
-      ERROR,
-      {
-        ObjectPattern: {
-          minProperties: 5,
-        },
-      },
-    ],
+    'object-curly-newline': 0,
     'object-property-newline': ERROR,
     'template-curly-spacing': ERROR,
     'dot-notation': ERROR,
@@ -104,8 +91,8 @@ module.exports = {
     'no-unreachable': ERROR,
     'no-sparse-arrays': ERROR,
     'array-callback-return': ERROR,
-    strict: [WARN, 'global'],
-    eqeqeq: ERROR,
+    'strict': [WARN, 'global'],
+    'eqeqeq': ERROR,
     'no-use-before-define': WARN,
     'no-undef': ERROR,
     'no-unused-vars': WARN,

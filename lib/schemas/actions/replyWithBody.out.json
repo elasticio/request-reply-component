@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "properties": {
+    "contentType": {
+      "type": "string"
+    },
+    "responseBody": {
+      "type": "object"
+    },
+    "statusCode": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "contentType",
+    "responseBody",
+    "statusCode"
+  ]
+}
