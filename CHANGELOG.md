@@ -1,4 +1,5 @@
 ## 1.3.0 (June 30, 2023)
+* Added `Response Status Code` validation
 * Updated README
 * Get rid of vulnerabilities and unused libraries in dependencies
 
