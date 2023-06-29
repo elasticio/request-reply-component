@@ -1,49 +1,53 @@
-# request-reply-component
+# HTTP Reply Component
 
-## General information
+## Table of Contents
+
+* [Description](#description)
+* [Actions](#actions)
+  * [Reply](#reply)
+  * [Reply With Attachment](#reply-with-attachment)
 
 ### Description
 
 The component replies with messages to the client requested a webhook.
 
-This component takes the incoming message body and applies the configured JSONata tranformation on it, if present, and return a message back to the client requested a webhook of a given flow.
-
-### Environment variables
-
-No required environment variables
-
-## Credentials
-
-This component requires no authentication.
+This component takes the incoming message body and applies the configured JSONata transformation on it, if present, and return a message back to the client requested a webhook of a given flow.
 
 ## Actions
 
 ### Reply
 
-List of Expected Config fields:
+#### Configuration Fields
+* **Custom HTTP Headers** - (string, optional): Provides with possibility to set additional headers separated by comma (e.g `Content-Language, User-Agent`)
 
-- `Custom HTTP Headers` - not required, provides with possibility to set additional headers (e.g `Content-Language`)
-- `Content Type (Defaults to 'application/json')` - not required, header value tells the client what the content type of the returned content actually is. The action supports only types with `text/...` or `application/...` in the beginning of the header name.
-- `Response Body` -  required, supports JSONata expressions. Max length of a JSONata expression is 1000 symbols.
-- `Response Status Code` - not required,user may specify response code, if needed
+#### Input Metadata
+* **Content Type (Defaults to 'application/json')** - (string, optional, defaults to `application/json`): Header value tells the client what the content type of the returned content actually is.
+* **Response Body** - (string/Object, required): Body to send as the response
+* **Response Status Code** - (number, optional, defaults to `200`): Integer number between `200` and `999` (more info about status codes in [rfc7231](https://datatracker.ietf.org/doc/html/rfc7231#section-6) standart)
 
-![image](https://user-images.githubusercontent.com/36419533/115863191-cb8e6800-a43d-11eb-83f2-c859b854db44.png)
+If provided `Custom HTTP Headers` there will be additional field:
+* **customHeaders**, contains:
+  * **Header <header name provided in "Custom HTTP Headers">** - you can provide value to your custom header here
+
+
+#### Output Metadata
+Same as `Input Metadata`
 
 ### Reply With Attachment
 
-List of Expected Config fields:
+#### Configuration Fields
+* **Custom HTTP Headers** - (string, optional): Provides with possibility to set additional headers separated by comma (e.g `Content-Language, User-Agent`)
 
-- `Custom HTTP Headers` - non-required, provides with possibility to set additional headers (e.g `Content-Language`)
-- `Content Type (Defaults to 'application/json')` - the `non-required` header value tells the client what the content type of the returned content actually is
-- `Attachment URL` - required, supported are attachments from `stewart` microservice by URL and external attachments URL, Max field length is 1000 symbols.
-- `Response Status Code` - not required, user may specify response code, if needed
+#### Input Metadata
+* **Content Type (Defaults to 'application/json')** - (string, optional, defaults to `application/json`): Header value tells the client what the content type of the returned content actually is.
+* **Attachment URL** - (string, required): Link to file (on platform or external) that will be used as response
+* **Response Status Code** - (number, optional, defaults to `200`): Integer number between `200` and `999` (more info about status codes in [rfc7231](https://datatracker.ietf.org/doc/html/rfc7231#section-6) standart)
 
-![image](https://user-images.githubusercontent.com/36419533/115863277-e8c33680-a43d-11eb-9819-667c369b141c.png)
+If provided `Custom HTTP Headers` there will be additional field:
+* **customHeaders**, contains:
+  * **Header <header name provided in "Custom HTTP Headers">** - you can provide value to your custom header here
 
-*Note:* Please be advised that the action does not actually write an attachment when the sample is retrieved. 
 
-## Known limitations
-No.
+#### Output Metadata
+Same as `Input Metadata`
 
-## Documentation links
-More information and some examples of JSONata expressions can be found [here](http://docs.jsonata.org/).
