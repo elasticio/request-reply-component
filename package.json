@@ -6,7 +6,7 @@
     "url": "git@github.com:elasticio/request-reply-component.git"
   },
   "engines": {
-    "node": "18.x"
+    "node": "24.x"
   },
   "author": "elastic.io GmbH",
   "scripts": {
@@ -18,7 +18,7 @@
     "@elastic.io/component-commons-library": "3.1.5",
     "@elastic.io/maester-client": "5.0.1",
     "elasticio-node": "0.0.9",
-    "elasticio-sailor-nodejs": "2.7.1"
+    "elasticio-sailor-nodejs": "3.0.0-ts-rewrite-dev2"
   },
   "devDependencies": {
     "@elastic.io/component-logger": "0.0.1",
